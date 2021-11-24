@@ -12,6 +12,7 @@ def choose_song():
 #def searchquery():
     #entered_text = searchbar.get()
 
+
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
     playsound(chosen_song)
