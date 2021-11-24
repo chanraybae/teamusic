@@ -1,20 +1,31 @@
 import tkinter
 from tkinter import *
+from PIL import Image, ImageTk
 
 # main
 stream = Tk()
 stream.title("Teamusic")    # window title
-stream.geometry("1000x900")    # fixed window size
+stream.geometry("1450x1025")    # fixed window size
 stream.configure(background="black")   # aesthetic choice
 
-
 # adding logo
-logo = PhotoImage(file="logo.png")
-logo = logo.resize((100, 100))
-Label(stream, image=logo, bg="black") .grid(row=0, column=0, sticky=W)
+Label(stream, text="\n\n\n\n\n\n\t teamusic", bg="black", fg="white", font="{Apple LiGothic} 10 bold") \
+    .grid(row=0, column=0, padx=7, pady=0, sticky=W)
+logo_orig = Image.open("logo.jpg")
+resize_logo = logo_orig.resize((100, 75))
+logo = ImageTk.PhotoImage(resize_logo)
+Label(stream, image=logo, bg="black") .grid(row=0, column=0, padx=50, pady=0, sticky=W)
 
 # creating song search query
-Label(stream, text="Search for song: ", bg="black", fg="orange", font="none 12 bold") .grid(row=1, column=0, sticky=W)
+Label(stream, text="\n\n\nSearch for song  ", bg="black", fg="white", font="{Apple LiGothic} 18 bold") \
+    .grid(row=0, column=5, padx=8, pady=50, sticky=W)
+
+Label(stream, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 18 bold") \
+    .grid(row=1, column=5, padx=8, pady=20, sticky=W)
+
+# creating search box
+searchbar = Entry(stream, width=70, bg="white", font="{Apple LiGothic} 18")
+searchbar.grid(row=0, column=5, padx=8, pady=50, sticky=W)
 
 stream.mainloop()
 
