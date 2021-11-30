@@ -63,3 +63,4 @@ if __name__ == '__main__':
     stream.mainloop()
 
     print('PyChar')
+    print('hi')
