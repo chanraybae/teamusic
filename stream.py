@@ -1,4 +1,5 @@
-import tkinter
+import tkinter as tk
+import threading
 from playsound import playsound
 from tkinter import *
 from PIL import Image, ImageTk
@@ -57,8 +58,12 @@ if __name__ == '__main__':
     # creating label for button event
     thru_label = Label(image=thru_cover)
     # button to play in library
-    thru_button = Button(stream, image=thru_cover, command=lambda: play(library, "Through and Through")) \
+    thru_button = Button(stream, image=thru_cover,
+                         command=threading.Thread(target=lambda: play(library, "Through and Through")).start()) \
         .grid(row=2, column=1, padx=7, pady=100, sticky=W)
+    #thru_button = Button(stream, image=thru_cover,
+                         #command=threading.Thread(target=lambda: play(library, "Through and Through")).start()) \
+        #.grid(row=2, column=1, padx=7, pady=100, sticky=W)
 
     stream.mainloop()
 
