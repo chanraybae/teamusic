@@ -46,8 +46,7 @@ class PriorityQueue:
             if self.front.priority > priority:
 
                 # Creating a new node
-                newnode = PriorityQueueNode(value,
-                                            priority)
+                newnode = PriorityQueueNode(value, priority)
 
                 # Updating the new node next value
                 newnode.next = self.front
@@ -71,8 +70,7 @@ class PriorityQueue:
 
                     temp = temp.next
 
-                newnode = PriorityQueueNode(value,
-                                            priority)
+                newnode = PriorityQueueNode(value, priority)
                 newnode.next = temp.next
                 temp.next = newnode
 
@@ -86,7 +84,6 @@ class PriorityQueue:
             return
 
         else:
-
             # Removing high priority node from Priority Queue, and updating front with next node
             self.front = self.front.next
             return 1
@@ -103,8 +100,7 @@ class PriorityQueue:
     # Method to Traverse through Priority Queue
     def traverse(self):
 
-        # Condition check for checking Priority
-        # Queue is empty or not
+        # Condition check for checking Priority Queue is empty or not
         if self.isempty():
             return "No songs currently queued."
         else:
@@ -118,21 +114,14 @@ class PriorityQueue:
 def choose_song():
     return -1
 
+
 # collects the text put into the search bar
-#def searchquery():
-    #entered_text = searchbar.get()
+def searchquery(playlist):
+    entered_text = searchbar.get()
 
-def display_search(playlist, search):
-    #search=lower(search); #lower_case function... needs to be written
-    buttonArr=[0 for x in range(len(playlist))]
-    i = 0
-    for key in playlist:
-        if search in key:
-            buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
-            buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
-            i=i+1
-
-
+    for song in playlist:
+        if entered_text in song:
+            pq.push(song, 0)
 
 
 def play(playlist, song_name):
@@ -144,7 +133,7 @@ if __name__ == '__main__':
     # creating our hash table of songs
     library = {
         'Through and Through': 'thru.mp3',
-        'One Two Three' : 'three.mp3'
+        'Adore You': 'adoreyou.mp3'
     }
 
     pq = PriorityQueue()
@@ -153,7 +142,6 @@ if __name__ == '__main__':
     pq.push("wassup", 3)
     pq.push("yo", 0)
     pq.traverse()
-    pq.pop()
 
     # using tkinter to create our GUI
     stream = Tk()
@@ -181,7 +169,7 @@ if __name__ == '__main__':
     searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
 
     # creating a button to initiate the search
-    searchbutton = Button(stream, text="Search",command=display_search(library, "Thr"), width=6, font="{Apple LiGothic} 18")
+    searchbutton = Button(stream, text="Search", width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
     # play button for songs
@@ -193,7 +181,7 @@ if __name__ == '__main__':
     thru_label = Label(image=thru_cover)
     # button to play in library
     thru_button = Button(stream, image=thru_cover,
-                         command=threading.Thread(target=lambda: play(library, "Through and Through")).start()) \
+                         command=threading.Thread(target=lambda: play(library, "Through and Through"))) \
         .grid(row=2, column=1, padx=7, pady=100, sticky=W)
     #thru_button = Button(stream, image=thru_cover,
                          #command=lambda: play(library, "Through and Through")) \
