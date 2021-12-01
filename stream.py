@@ -123,6 +123,16 @@ def searchquery(playlist):
         if entered_text in song:
             pq.push(song, 0)
 
+def display_search(playlist, search):
+    #search=lower(search); #lower_case function... needs to be written
+    buttonArr=[0 for x in range(len(playlist))]
+    i = 0
+    for key in playlist:
+        if search in key:
+            buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
+            buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
+            i=i+1
+
 
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
@@ -169,7 +179,7 @@ if __name__ == '__main__':
     searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
 
     # creating a button to initiate the search
-    searchbutton = Button(stream, text="Search", width=6, font="{Apple LiGothic} 18")
+    searchbutton = Button(stream, text="Search", command=display_search(library, "Thr"), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
     # play button for songs
