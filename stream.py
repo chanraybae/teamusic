@@ -129,7 +129,7 @@ def display_search(playlist, search):
     i = 0
     for key in playlist:
         if search in key:
-            buttonArr[i]= Button(stream, text=key, command= lambda: play(library, key), width=20, font="{Apple LiGothic} 18")
+            buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
             buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
             i=i+1
 
