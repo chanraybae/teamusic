@@ -167,6 +167,10 @@ if __name__ == '__main__':
     searchbar = Entry(stream, width=70, bg="white", font="{Apple LiGothic} 18")
     searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
 
+    # creating a button to initiate the search
+    searchbutton = Button(stream, text="Search", width=6, font="{Apple LiGothic} 18")
+    searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
+
     # play button for songs
     # Khai Dreams Song
     thru_cover_orig = Image.open("thru.png")
