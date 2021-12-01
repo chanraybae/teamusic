@@ -205,4 +205,4 @@ if __name__ == '__main__':
 
     print('\nPyChar')
     print('hi')
-    print('thread works?')
+    print('hello!')
