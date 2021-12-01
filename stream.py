@@ -5,6 +5,115 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 
+# Creating the Priority Queue class to use for linking songs in the queue
+class PriorityQueueNode:
+
+    def __init__(self, value, pr):
+        self.data = value
+        self.priority = pr
+        self.next = None
+
+
+# implementing the Priority Queue
+class PriorityQueue:
+
+    def __init__(self):
+
+        self.front = None
+
+    # Method to check Priority Queue is Empty
+    # or not if Empty then it will return True
+    # Otherwise False
+    def isempty(self):
+
+        return True if self.front == None else False
+
+    # Method to add items in Priority Queue according to their priority value
+    def push(self, value, priority):
+
+        # Condition check for checking Priority Queue is empty or not
+        if self.isempty():
+
+            # Creating a new node and assigning it to class variable
+            self.front = PriorityQueueNode(value, priority)
+
+            # Returning 1 for successful execution
+            return 1
+
+        else:
+
+            # Special condition check to see that first node priority value
+            if self.front.priority > priority:
+
+                # Creating a new node
+                newnode = PriorityQueueNode(value,
+                                            priority)
+
+                # Updating the new node next value
+                newnode.next = self.front
+
+                # Assigning it to self.front
+                self.front = newnode
+
+                # Returning 1 for successful execution
+                return 1
+
+            else:
+
+                # Traversing through Queue until it finds the next smaller priority node
+                temp = self.front
+
+                while temp.next:
+
+                    # If same priority node found then current node will come after previous node
+                    if priority <= temp.next.priority:
+                        break
+
+                    temp = temp.next
+
+                newnode = PriorityQueueNode(value,
+                                            priority)
+                newnode.next = temp.next
+                temp.next = newnode
+
+                # Returning 1 for successful execution
+                return 1
+
+    # Method to remove high priority item from the Priority Queue
+    def pop(self):
+        # Checking if the queue is empty - if so returns nothing
+        if self.isempty():
+            return
+
+        else:
+
+            # Removing high priority node from Priority Queue, and updating front with next node
+            self.front = self.front.next
+            return 1
+
+    # Method to return highest priority node value Not removing it
+    def peek(self):
+
+        # Checking if the queue is empty - if so returns nothing
+        if self.isempty():
+            return
+        else:
+            return self.front.data
+
+    # Method to Traverse through Priority Queue
+    def traverse(self):
+
+        # Condition check for checking Priority
+        # Queue is empty or not
+        if self.isempty():
+            return "No songs currently queued."
+        else:
+            temp = self.front
+            while temp:
+                print(temp.data, end=" ")
+                temp = temp.next
+
+
 # defines which song shall be chosen
 def choose_song():
     return -1
@@ -24,6 +133,14 @@ if __name__ == '__main__':
     library = {
         'Through and Through': 'thru.mp3'
     }
+
+    pq = PriorityQueue()
+    pq.push("thru.mp3", 1)
+    pq.push("hi", 2)
+    pq.push("wassup", 3)
+    pq.push("yo", 0)
+    pq.traverse()
+    pq.pop()
 
     # using tkinter to create our GUI
     stream = Tk()
@@ -62,10 +179,10 @@ if __name__ == '__main__':
                          command=threading.Thread(target=lambda: play(library, "Through and Through")).start()) \
         .grid(row=2, column=1, padx=7, pady=100, sticky=W)
     #thru_button = Button(stream, image=thru_cover,
-                         #command=threading.Thread(target=lambda: play(library, "Through and Through")).start()) \
+                         #command=lambda: play(library, "Through and Through")) \
         #.grid(row=2, column=1, padx=7, pady=100, sticky=W)
 
     stream.mainloop()
 
-    print('PyChar')
+    print('\nPyChar')
     print('hi')
