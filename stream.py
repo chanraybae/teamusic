@@ -129,7 +129,7 @@ def display_search(playlist, search):
     i = 0
     for key in playlist:
         if search in key:
-            buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
+            buttonArr[i]= Button(stream, text=key, command= lambda: play(library, key), width=20, font="{Apple LiGothic} 18")
             buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
             i=i+1
 
@@ -137,6 +137,10 @@ def display_search(playlist, search):
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
     playsound(chosen_song)
+
+def play_thread(library, song):
+    t=threading.Thread(target=play,args=(library,song))
+    t.start()
 
 
 if __name__ == '__main__':
@@ -179,7 +183,7 @@ if __name__ == '__main__':
     searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
 
     # creating a button to initiate the search
-    searchbutton = Button(stream, text="Search", command=display_search(library, "Thr"), width=6, font="{Apple LiGothic} 18")
+    searchbutton = Button(stream, text="Search", command=lambda:display_search(library, "Thr"), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
     # play button for songs
@@ -191,7 +195,7 @@ if __name__ == '__main__':
     thru_label = Label(image=thru_cover)
     # button to play in library
     thru_button = Button(stream, image=thru_cover,
-                         command=threading.Thread(target=lambda: play(library, "Through and Through"))) \
+                         command=lambda:play_thread(library,"Through and Through")) \
         .grid(row=2, column=1, padx=7, pady=100, sticky=W)
     #thru_button = Button(stream, image=thru_cover,
                          #command=lambda: play(library, "Through and Through")) \
@@ -201,3 +205,4 @@ if __name__ == '__main__':
 
     print('\nPyChar')
     print('hi')
+    print('thread works?')
