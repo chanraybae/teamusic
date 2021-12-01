@@ -53,3 +53,5 @@ app = QApplication(sys.argv)
 w = MainWindow()
 w.show()
 app.exec()
+
+print("hi")
