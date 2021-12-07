@@ -112,9 +112,9 @@ class PriorityQueue:
 
 
 # loads all the songs into the pygame mixer tool
-#def loadtomixer(playlist):
-    #for song in playlist:
-        #mixer.music.load(playlist[song])
+def loadtomixer(playlist):
+    for song in playlist:
+        mixer.music.load(playlist[song])
 
 
 # defines which song shall be chosen
@@ -130,34 +130,39 @@ def searchquery(playlist):
         if entered_text in song:
             pq.push(song, 0)
 
-def display_search(playlist, search):
-    #search=lower(search); #lower_case function... needs to be written
-    buttonArr = [0 for x in range(len(playlist))]
+def display_search(playlist, search, album_button, buttonArr):
+    album_button.grid_remove()
     i = 0
-    for key in playlist:
-        if search in key:
-            buttonArr[i] = Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
-    search.lower
-    buttonArr = [0 for x in range(len(playlist))]
-    i = 0
-    for key in playlist:
-        if search in key.lower():
-            buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
-            buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
+    j=0
+    for j in range(3):
+        for i in range(len(playlist)):
+            if (buttonArr[j][i]!=0):
+                buttonArr[j][i].grid_remove()
             i = i + 1
+        j=j+1
+    i = 0
+    search = search.lower()
+    for key in playlist:
+        lower_song= key.lower()
+        if search in lower_song:
+            buttonArr[0][i] = Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
+            buttonArr[0][i].grid(row=2 + i, column=1, padx=8, pady=10, sticky=W)
+            buttonArr[1][i] = Button(stream, text="Play Next", width=10, font="{Apple LiGothic} 18")
+            buttonArr[1][i].grid(row=2 + i, column=2, padx=8, pady=10, sticky=W)
+            buttonArr[2][i] = Button(stream, text="Add to Queue", width=15, font="{Apple LiGothic} 18")
+            buttonArr[2][i].grid(row=2 + i, column=3, padx=8, pady=10, sticky=W)
+        i = i + 1
+
 
 
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
-    mixer.music.load(chosen_song)
+    song_instance = pygame.mixer.Sound(chosen_song)
     mixer.music.play()
 
 def play_thread(library, song):
-    t = threading.Thread(target=play, args=(library, song))
+    t=threading.Thread(target=play,args=(library,song))
     t.start()
-
-#def createqueue(playlist):
-    #songQueue = PriorityQueue()
 
 
 if __name__ == '__main__':
@@ -168,7 +173,6 @@ if __name__ == '__main__':
         'Love Me Back': 'lovemeback.mp3'
     }
 
-    #createqueue(library)
     pq = PriorityQueue()
     pq.push("thru.mp3", 1)
     pq.push("hi", 2)
@@ -184,6 +188,8 @@ if __name__ == '__main__':
 
     # Initializing pygame audio mixer
     mixer.init()
+    loadtomixer(library)
+
 
     # adding logo
     Label(stream, text="\n\n\n\n\n\n\t teamusic", bg="black", fg="white", font="{Apple LiGothic} 10 bold") \
@@ -204,16 +210,13 @@ if __name__ == '__main__':
     searchbar = Entry(stream, width=70, bg="white", font="{Apple LiGothic} 18")
     searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
 
+
     # creating a button to initiate the search
-    searchbutton = Button(stream, text="Search", command=lambda:display_search(library, searchbar.get()), width=6, font="{Apple LiGothic} 18")
+    buttonArr= [[0 for x in range(3)]for x in range(len(library))]
+    searchbutton = Button(stream, text="Search", command=lambda:display_search(library, searchbar.get(),thru_button,buttonArr), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
-    # creating play and pause button
-    playpause_orig = Image.open("playpause.png")
-    resize_playpause = playpause_orig.resize((100, 75))
-    playpause = ImageTk.PhotoImage(resize_playpause)
-    ppbutton = Button(stream, image=playpause, width=100, font="{Apple LiGothic} 18")
-    ppbutton.grid(row=2, column=2, padx=8, pady=10, sticky=W)
+
 
     # play button for songs
     # Khai Dreams Song
@@ -224,8 +227,8 @@ if __name__ == '__main__':
     thru_label = Label(image=thru_cover)
     # button to play in library
     thru_button = Button(stream, image=thru_cover,
-                         command=lambda: play_thread(library, "Through and Through")) \
-        .grid(row=2, column=1, padx=7, pady=100, sticky=W)
+                         command=lambda:play_thread(library,"Through and Through"))
+    thru_button.grid(row=2, column=1, padx=7, pady=100, sticky=W)
     #thru_button = Button(stream, image=thru_cover,
                          #command=lambda: play(library, "Through and Through")) \
         #.grid(row=2, column=1, padx=7, pady=100, sticky=W)
