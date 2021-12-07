@@ -1,5 +1,6 @@
 import tkinter as tk
 import threading
+import pygame
 from pygame import mixer
 from tkinter import *
 from PIL import Image, ImageTk
@@ -137,7 +138,7 @@ def display_search(playlist, search):
         if search in key:
             buttonArr[i] = Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
     search.lower
-    buttonArr=[0 for x in range(len(playlist))]
+    buttonArr = [0 for x in range(len(playlist))]
     i = 0
     for key in playlist:
         if search in key.lower():
