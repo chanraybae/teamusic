@@ -124,11 +124,11 @@ def searchquery(playlist):
             pq.push(song, 0)
 
 def display_search(playlist, search):
-    #search=lower(search); #lower_case function... needs to be written
+    search.lower
     buttonArr=[0 for x in range(len(playlist))]
     i = 0
     for key in playlist:
-        if search in key:
+        if search in key.lower():
             buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
             buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
             i=i+1
@@ -182,8 +182,9 @@ if __name__ == '__main__':
     searchbar = Entry(stream, width=70, bg="white", font="{Apple LiGothic} 18")
     searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
 
+
     # creating a button to initiate the search
-    searchbutton = Button(stream, text="Search", command=lambda:display_search(library, "Thr"), width=6, font="{Apple LiGothic} 18")
+    searchbutton = Button(stream, text="Search", command=lambda:display_search(library, searchbar.get()), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
     # play button for songs
@@ -200,6 +201,9 @@ if __name__ == '__main__':
     #thru_button = Button(stream, image=thru_cover,
                          #command=lambda: play(library, "Through and Through")) \
         #.grid(row=2, column=1, padx=7, pady=100, sticky=W)
+
+
+
 
     stream.mainloop()
 
