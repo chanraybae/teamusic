@@ -1,6 +1,6 @@
 import tkinter as tk
 import threading
-from playsound import playsound
+from pygame import mixer
 from tkinter import *
 from PIL import Image, ImageTk
 
@@ -110,6 +110,12 @@ class PriorityQueue:
                 temp = temp.next
 
 
+# loads all the songs into the pygame mixer tool
+def loadtomixer(playlist):
+    for song in playlist:
+        mixer.music.load(playlist[song])
+
+
 # defines which song shall be chosen
 def choose_song():
     return -1
@@ -124,6 +130,12 @@ def searchquery(playlist):
             pq.push(song, 0)
 
 def display_search(playlist, search):
+    #search=lower(search); #lower_case function... needs to be written
+    buttonArr = [0 for x in range(len(playlist))]
+    i = 0
+    for key in playlist:
+        if search in key:
+            buttonArr[i] = Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
     search.lower
     buttonArr=[0 for x in range(len(playlist))]
     i = 0
@@ -131,12 +143,12 @@ def display_search(playlist, search):
         if search in key.lower():
             buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
             buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
-            i=i+1
+            i = i + 1
 
 
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
-    playsound(chosen_song)
+    #mixer.music.play(chosen_song)
 
 def play_thread(library, song):
     t=threading.Thread(target=play,args=(library,song))
@@ -147,7 +159,8 @@ if __name__ == '__main__':
     # creating our hash table of songs
     library = {
         'Through and Through': 'thru.mp3',
-        'Adore You': 'adoreyou.mp3'
+        'Adore You': 'adoreyou.mp3',
+        'Love Me Back': 'lovemeback.mp3'
     }
 
     pq = PriorityQueue()
@@ -162,6 +175,10 @@ if __name__ == '__main__':
     stream.title("Teamusic")  # window title
     stream.geometry("1450x1025")  # fixed window size
     stream.configure(background="black")  # aesthetic choice
+
+    # Initializing pygame audio mixer
+    mixer.init()
+    loadtomixer(library)
 
     # adding logo
     Label(stream, text="\n\n\n\n\n\n\t teamusic", bg="black", fg="white", font="{Apple LiGothic} 10 bold") \
@@ -186,6 +203,8 @@ if __name__ == '__main__':
     # creating a button to initiate the search
     searchbutton = Button(stream, text="Search", command=lambda:display_search(library, searchbar.get()), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
+
+
 
     # play button for songs
     # Khai Dreams Song
