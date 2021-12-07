@@ -253,4 +253,4 @@ if __name__ == '__main__':
 
     print('\nPyChar')
     print('hi')
-    print('hello there!')
+    print('hello !')
