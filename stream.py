@@ -149,7 +149,8 @@ def display_search(playlist, search):
 
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
-    #mixer.music.play(chosen_song)
+    song_instance = pygame.mixer.Sound(chosen_song)
+    mixer.music.play()
 
 def play_thread(library, song):
     t=threading.Thread(target=play,args=(library,song))
@@ -180,6 +181,7 @@ if __name__ == '__main__':
     # Initializing pygame audio mixer
     mixer.init()
     loadtomixer(library)
+
 
     # adding logo
     Label(stream, text="\n\n\n\n\n\n\t teamusic", bg="black", fg="white", font="{Apple LiGothic} 10 bold") \
