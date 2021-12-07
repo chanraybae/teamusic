@@ -130,7 +130,7 @@ def searchquery(playlist):
         if entered_text in song:
             pq.push(song, 0)
 
-def display_search(playlist, search, album_button, buttonArr):
+def display_search(playlist, search, album_button, buttonArr,pq):
     album_button.grid_remove()
     i = 0
     j=0
@@ -147,9 +147,9 @@ def display_search(playlist, search, album_button, buttonArr):
         if search in lower_song:
             buttonArr[0][i] = Button(stream, text=key, width=20,command=lambda song=key:play_thread(library, song), font="{Apple LiGothic} 18")
             buttonArr[0][i].grid(row=2 + i, column=1, padx=8, pady=10, sticky=W)
-            buttonArr[1][i] = Button(stream, text="Play Next", width=10, font="{Apple LiGothic} 18")
+            buttonArr[1][i] = Button(stream, text="Play Next",command=lambda song=key:play_next(pq,song), width=10, font="{Apple LiGothic} 18")
             buttonArr[1][i].grid(row=2 + i, column=2, padx=8, pady=10, sticky=W)
-            buttonArr[2][i] = Button(stream, text="Add to Queue", width=15, font="{Apple LiGothic} 18")
+            buttonArr[2][i] = Button(stream, text="Add to Queue",command=lambda song=key:add_to_queue(pq,song), width=15, font="{Apple LiGothic} 18")
             buttonArr[2][i].grid(row=2 + i, column=3, padx=8, pady=10, sticky=W)
         i = i + 1
 
@@ -157,6 +157,9 @@ def play(playlist, song_name):
     chosen_song = playlist[song_name]
     mixer.music.load(chosen_song)
     mixer.music.play()
+
+
+
 
 
 def play_thread(library, song):
@@ -173,6 +176,27 @@ def playorpause():
 
 #def createqueue(playlist):
     #songQueue = PriorityQueue()
+
+def play_next(pq,song):
+    currNode=pq.front
+    while(currNode!=None):
+        currNode.priority+=1
+        currNode=currNode.next
+    pq.push(song,0)
+    print("\n\n\n")
+    pq.traverse()
+
+def add_to_queue(pq,song):
+    max=0
+    currNode=pq.front
+    while(currNode!=None):
+        if (currNode.priority>max):
+            max=currNode.priority
+        currNode = currNode.next
+    pq.push(song,max+1)
+    print("\n\n\n")
+    pq.traverse()
+
 
 
 if __name__ == '__main__':
@@ -221,7 +245,7 @@ if __name__ == '__main__':
 
     # creating a button to initiate the search
     buttonArr = [[0 for x in range(3)] for x in range(len(library))]
-    searchbutton = Button(stream, text="Search", command=lambda: display_search(library, searchbar.get(), thru_button, buttonArr), width=6, font="{Apple LiGothic} 18")
+    searchbutton = Button(stream, text="Search", command=lambda: display_search(library, searchbar.get(), thru_button, buttonArr,pq), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
     # creating play and pause button
@@ -254,3 +278,6 @@ if __name__ == '__main__':
     print('\nPyChar')
     print('hi')
     print('hello !')
+
+
+
