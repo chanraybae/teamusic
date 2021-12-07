@@ -178,22 +178,34 @@ def playorpause():
     #songQueue = PriorityQueue()
 
 def play_next(pq,song):
-    currNode=pq.front
-    while(currNode!=None):
-        currNode.priority+=1
-        currNode=currNode.next
-    pq.push(song,0)
+    nextSong=PriorityQueueNode(song, 0)
+    nextSong.next=pq.front
+    pq.front=nextSong
+    #currNode=pq.front
+    #while(currNode!=None):
+    #    currNode.priority+=1
+    #    currNode=currNode.next
+    #pq.push(song,0)
     print("\n\n\n")
     pq.traverse()
 
 def add_to_queue(pq,song):
-    max=0
-    currNode=pq.front
-    while(currNode!=None):
-        if (currNode.priority>max):
-            max=currNode.priority
-        currNode = currNode.next
-    pq.push(song,max+1)
+    if pq.front == None:
+        newSong = PriorityQueueNode(song, 0)
+        pq.front=newSong
+    else:
+        currNode = pq.front
+        while (currNode.next!= None):
+            currNode=currNode.next
+        currNode.next=newSong = PriorityQueueNode(song, currNode.priority)
+
+    #max=0
+    #currNode=pq.front
+    #while(currNode!=None):
+    #    if (currNode.priority>max):
+    #        max=currNode.priority
+    #    currNode = currNode.next
+    #pq.push(song,max+1)
     print("\n\n\n")
     pq.traverse()
 
