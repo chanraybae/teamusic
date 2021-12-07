@@ -213,7 +213,12 @@ if __name__ == '__main__':
     searchbutton = Button(stream, text="Search", command=lambda:display_search(library, searchbar.get()), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
-
+    # creating play and pause button
+    playpause_orig = Image.open("playpause.png")
+    resize_playpause = playpause_orig.resize((100, 75))
+    playpause = ImageTk.PhotoImage(resize_playpause)
+    ppbutton = Button(stream, image=playpause, command=lambda:display_search(library, searchbar.get()), width=100, font="{Apple LiGothic} 18")
+    ppbutton.grid(row=2, column=1, padx=600, pady=100, sticky=W)
 
     # play button for songs
     # Khai Dreams Song
