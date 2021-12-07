@@ -134,7 +134,7 @@ def display_search(playlist, search, album_button, buttonArr):
     album_button.grid_remove()
     i = 0
     j=0
-    for j in range(4):
+    for j in range(3):
         for i in range(len(playlist)):
             if (buttonArr[j][i]!=0):
                 buttonArr[j][i].grid_remove()
@@ -145,7 +145,6 @@ def display_search(playlist, search, album_button, buttonArr):
     for key in playlist:
         lower_song= key.lower()
         if search in lower_song:
-            buttonArr[3][i]=key
             buttonArr[0][i] = Button(stream, text=key, width=20,command=lambda song=key:play_thread(library, song), font="{Apple LiGothic} 18")
             buttonArr[0][i].grid(row=2 + i, column=1, padx=8, pady=10, sticky=W)
             buttonArr[1][i] = Button(stream, text="Play Next", width=10, font="{Apple LiGothic} 18")
@@ -221,7 +220,7 @@ if __name__ == '__main__':
     searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
 
     # creating a button to initiate the search
-    buttonArr = [[0 for x in range(4)] for x in range(4)]
+    buttonArr = [[0 for x in range(3)] for x in range(len(library))]
     searchbutton = Button(stream, text="Search", command=lambda: display_search(library, searchbar.get(), thru_button, buttonArr), width=6, font="{Apple LiGothic} 18")
     searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
 
