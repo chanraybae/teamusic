@@ -1,234 +1,181 @@
-import tkinter as tk
-import threading
-import pygame
-from pygame import mixer
+#IMPORTS
 from tkinter import *
-from PIL import Image, ImageTk
+from pygame import mixer
+import pygame
+import time
 
 
-# Creating the Priority Queue class to use for linking songs in the queue
-class PriorityQueueNode:
+#listing music:
+music = [
+    "thru.mp3",
+    "lovemeback.mp3",
+    "adoreyou.mp3"
+    ]
 
-    def __init__(self, value, pr):
-        self.data = value
-        self.priority = pr
-        self.next = None
+#WINDOW SETTINGS
+window = Tk()
+window.title("GAMING MUSIC by KOOB")
+window.geometry("700x50")
+#window.wm_iconbitmap('media_logo.ico')
 
+topFrame = Frame(window)
+topFrame.pack()
 
-# implementing the Priority Queue
-class PriorityQueue:
+bottomFrame = Frame(window)
+bottomFrame.pack(side=BOTTOM)
+window.resizable(width=False, height=False)
 
-    def __init__(self):
+window["bg"] = "black"
 
-        self.front = None
+music_number = int(0)
+music_number2 = (music_number)
+next_music = (music[music_number + 1])
+current_music = (music[music_number])
 
-    # Method to check Priority Queue is Empty
-    # or not if Empty then it will return True
-    # Otherwise False
-    def isempty(self):
+paused = True
 
-        return True if self.front == None else False
+#DEFINITIONS BELOW:
 
-    # Method to add items in Priority Queue according to their priority value
-    def push(self, value, priority):
+def quitprogram():
+    time.sleep(0.25)
+    window.destroy()
+    time.sleep(0.25)
+    quit()
 
-        # Condition check for checking Priority Queue is empty or not
-        if self.isempty():
+def nextsong():
+    global songLABEL
+    global music_number
+    global current_music
+    global music
+    global music_number2
+    global next_music
+    mixer.music.stop()
+    music_number = int(music_number2 + 1)
+    music_number2 = (music_number)
+    print (music_number)
+    current_music = (music[music_number])
+    mixer.music.load(current_music)
 
-            # Creating a new node and assigning it to class variable
-            self.front = PriorityQueueNode(value, priority)
+    songLABEL.forget()
+    time.sleep(0.5)
+    songLABEL = Label(text=current_music, fg="white")
+    songLABEL.pack(side=TOP)
+    songLABEL["bg"] = "black"
 
-            # Returning 1 for successful execution
-            return 1
-
-        else:
-
-            # Special condition check to see that first node priority value
-            if self.front.priority > priority:
-
-                # Creating a new node
-                newnode = PriorityQueueNode(value, priority)
-
-                # Updating the new node next value
-                newnode.next = self.front
-
-                # Assigning it to self.front
-                self.front = newnode
-
-                # Returning 1 for successful execution
-                return 1
-
-            else:
-
-                # Traversing through Queue until it finds the next smaller priority node
-                temp = self.front
-
-                while temp.next:
-
-                    # If same priority node found then current node will come after previous node
-                    if priority <= temp.next.priority:
-                        break
-
-                    temp = temp.next
-
-                newnode = PriorityQueueNode(value, priority)
-                newnode.next = temp.next
-                temp.next = newnode
-
-                # Returning 1 for successful execution
-                return 1
-
-    # Method to remove high priority item from the Priority Queue
-    def pop(self):
-        # Checking if the queue is empty - if so returns nothing
-        if self.isempty():
-            return
-
-        else:
-            # Removing high priority node from Priority Queue, and updating front with next node
-            self.front = self.front.next
-            return 1
-
-    # Method to return highest priority node value Not removing it
-    def peek(self):
-
-        # Checking if the queue is empty - if so returns nothing
-        if self.isempty():
-            return
-        else:
-            return self.front.data
-
-    # Method to Traverse through Priority Queue
-    def traverse(self):
-
-        # Condition check for checking Priority Queue is empty or not
-        if self.isempty():
-            return "No songs currently queued."
-        else:
-            temp = self.front
-            while temp:
-                print(temp.data, end=" ")
-                temp = temp.next
-
-
-# loads all the songs into the pygame mixer tool
-def loadtomixer(playlist):
-    for song in playlist:
-        mixer.music.load(playlist[song])
-
-
-# defines which song shall be chosen
-def choose_song():
-    return -1
-
-
-# collects the text put into the search bar
-def searchquery(playlist):
-    entered_text = searchbar.get()
-
-    for song in playlist:
-        if entered_text in song:
-            pq.push(song, 0)
-
-def display_search(playlist, search):
-    #search=lower(search); #lower_case function... needs to be written
-    buttonArr = [0 for x in range(len(playlist))]
-    i = 0
-    for key in playlist:
-        if search in key:
-            buttonArr[i] = Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
-    search.lower
-    buttonArr = [0 for x in range(len(playlist))]
-    i = 0
-    for key in playlist:
-        if search in key.lower():
-            buttonArr[i]= Button(stream, text=key, width=20, font="{Apple LiGothic} 18")
-            buttonArr[i].grid(row=1+i, column=2, padx=8, pady=50, sticky=W)
-            i = i + 1
-
-
-def play(playlist, song_name):
-    chosen_song = playlist[song_name]
-    song_instance = pygame.mixer.Sound(chosen_song)
+    time.sleep(0.5)
     mixer.music.play()
 
-def play_thread(library, song):
-    t=threading.Thread(target=play,args=(library,song))
-    t.start()
+    next_music = (music[music_number + 1])
+    pygame.mixer.music.queue(next_music)
+    print ("NEXT: ", next_music)
 
 
-if __name__ == '__main__':
-    # creating our hash table of songs
-    library = {
-        'Through and Through': 'thru.mp3',
-        'Adore You': 'adoreyou.mp3',
-        'Love Me Back': 'lovemeback.mp3'
-    }
+def lastsong():
+    global songLABEL
+    global music_number
+    global current_music
+    global music
+    global music_number2
+    global next_music
+    mixer.music.stop()
+    music_number = int(music_number2 - 1)
+    music_number2 = (music_number)
+    print (music_number)
+    current_music = (music[music_number])
+    mixer.music.load(current_music)
 
-    pq = PriorityQueue()
-    pq.push("thru.mp3", 1)
-    pq.push("hi", 2)
-    pq.push("wassup", 3)
-    pq.push("yo", 0)
-    pq.traverse()
+    songLABEL.forget()
+    time.sleep(0.5)
+    songLABEL = Label(text=current_music, fg="white")
+    songLABEL.pack(side=TOP)
+    songLABEL["bg"] = "black"
 
-    # using tkinter to create our GUI
-    stream = Tk()
-    stream.title("Teamusic")  # window title
-    stream.geometry("1450x1025")  # fixed window size
-    stream.configure(background="black")  # aesthetic choice
+    time.sleep(0.5)
+    mixer.music.play()
 
-    # Initializing pygame audio mixer
-    mixer.init()
-    loadtomixer(library)
-
-
-    # adding logo
-    Label(stream, text="\n\n\n\n\n\n\t teamusic", bg="black", fg="white", font="{Apple LiGothic} 10 bold") \
-        .grid(row=0, column=0, padx=7, pady=0, sticky=W)
-    logo_orig = Image.open("logo.jpg")
-    resize_logo = logo_orig.resize((100, 75))
-    logo = ImageTk.PhotoImage(resize_logo)
-    Label(stream, image=logo, bg="black").grid(row=0, column=0, padx=50, pady=0, sticky=W)
-
-    # creating song search query
-    Label(stream, text="\n\n\nSearch for song  ", bg="black", fg="white", font="{Apple LiGothic} 18 bold") \
-        .grid(row=0, column=1, padx=8, pady=50, sticky=W)
-    # welcoming user to program in app
-    Label(stream, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 18 bold") \
-        .grid(row=1, column=1, padx=8, pady=20, sticky=W)
-
-    # creating search box
-    searchbar = Entry(stream, width=70, bg="white", font="{Apple LiGothic} 18")
-    searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
+    next_music = (music[music_number + 1])
+    pygame.mixer.music.queue(next_music)
+    print ("NEXT: ", next_music)
 
 
-    # creating a button to initiate the search
-    searchbutton = Button(stream, text="Search", command=lambda:display_search(library, searchbar.get()), width=6, font="{Apple LiGothic} 18")
-    searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
+def playpause():
+    global songLABEL
+    global current_music
+    global next_music
+    print(music_number)
+    current_music = (music[music_number])
+    global paused
+
+    if mixer.get_init():
+        if paused is False:
+            mixer.music.pause()
+            paused = True
+        else:
+            mixer.music.unpause()
+            paused = False
+    else:
+        mixer.init()
+        mixer.music.load(current_music)
+        mixer.music.play()
+        paused = False
+
+    songLABEL.forget()
+    songLABEL = Label(text=current_music, fg="white")
+    songLABEL.pack(side=TOP)
+    songLABEL["bg"] = "black"
+
+    next_music = (music[music_number + 1])
+    pygame.mixer.music.queue(next_music)
+    print ("NEXT: ", next_music)
+
+def rewindsong():
+    pygame.mixer.music.rewind()
+
+
+def volumedown():
+    pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() - 0.1)
+
+
+def volumeup():
+    pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.1)
 
 
 
-    # play button for songs
-    # Khai Dreams Song
-    thru_cover_orig = Image.open("thru.png")
-    resize_thru_cover = thru_cover_orig.resize((500, 300))
-    thru_cover = ImageTk.PhotoImage(resize_thru_cover)
-    # creating label for button event
-    thru_label = Label(image=thru_cover)
-    # button to play in library
-    thru_button = Button(stream, image=thru_cover,
-                         command=lambda:play_thread(library,"Through and Through")) \
-        .grid(row=2, column=1, padx=7, pady=100, sticky=W)
-    #thru_button = Button(stream, image=thru_cover,
-                         #command=lambda: play(library, "Through and Through")) \
-        #.grid(row=2, column=1, padx=7, pady=100, sticky=W)
+playBUTTON = Button(text="PLAY-PAUSE", fg="white")
+playBUTTON.pack(side=LEFT)
+playBUTTON.configure(command=playpause)
+playBUTTON["bg"] = "black"
 
+nextBUTTON = Button(text=">>>", fg="white")
+nextBUTTON.pack(side=LEFT, padx=10)
+nextBUTTON.configure(command=nextsong)
+nextBUTTON["bg"] = "black"
 
+lastBUTTON = Button(text="<<<", fg="white")
+lastBUTTON.pack(side=LEFT, padx=10)
+lastBUTTON.configure(command=lastsong)
+lastBUTTON["bg"] = "black"
 
+rewindBUTTON = Button(text="replay", fg="white")
+rewindBUTTON.pack(side=LEFT, padx=10)
+rewindBUTTON.configure(command=rewindsong)
+rewindBUTTON["bg"] = "black"
 
-    stream.mainloop()
+volumedownBUTTON = Button(text="VOL -", fg="white")
+volumedownBUTTON.pack(side=LEFT, padx=10)
+volumedownBUTTON.configure(command=volumedown)
+volumedownBUTTON["bg"] = "black"
 
-    print('\nPyChar')
-    print('hi')
-    print('hello!')
+volumeupBUTTON = Button(text="VOL +", fg="white")
+volumeupBUTTON.pack(side=LEFT, padx=10)
+volumeupBUTTON.configure(command=volumeup)
+volumeupBUTTON["bg"] = "black"
+
+songLABEL = Label(text="music provided by NoCopyrightSounds", fg="white")
+songLABEL.pack(side=TOP)
+songLABEL["bg"] = "black"
+
+window.protocol('WM_DELETE_WINDOW', quitprogram)
+
+#THE WINDOW BEING KEPT OPEN
+window.mainloop()
