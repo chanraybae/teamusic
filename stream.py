@@ -156,7 +156,6 @@ def play_thread(library, song):
     t = threading.Thread(target=play, args=(library, song))
     t.start()
 
-
 #def createqueue(playlist):
     #songQueue = PriorityQueue()
 
@@ -217,8 +216,9 @@ if __name__ == '__main__':
     playpause_orig = Image.open("playpause.png")
     resize_playpause = playpause_orig.resize((100, 75))
     playpause = ImageTk.PhotoImage(resize_playpause)
-    ppbutton = Button(stream, image=playpause, command=lambda:display_search(library, searchbar.get()), width=100, font="{Apple LiGothic} 18")
-    ppbutton.grid(row=2, column=1, padx=600, pady=100, sticky=W)
+    ppbutton = Button(stream, image=playpause, width=100, font="{Apple LiGothic} 18")
+    ppbutton.grid(row=2, column=2, padx=8, pady=10, sticky=W)
+
 
     # play button for songs
     # Khai Dreams Song
