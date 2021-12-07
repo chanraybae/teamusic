@@ -152,9 +152,18 @@ def play(playlist, song_name):
     mixer.music.load(chosen_song)
     mixer.music.play()
 
+
 def play_thread(library, song):
     t = threading.Thread(target=play, args=(library, song))
     t.start()
+
+
+# difference is that this function simply plays or pauses the current song playing in queue instead of referencing
+def playorpause():
+    if pygame.mixer.music.get_busy():
+        mixer.music.pause()
+    else:
+        mixer.music.unpause()
 
 #def createqueue(playlist):
     #songQueue = PriorityQueue()
@@ -212,8 +221,8 @@ if __name__ == '__main__':
     playpause_orig = Image.open("playpause.png")
     resize_playpause = playpause_orig.resize((100, 75))
     playpause = ImageTk.PhotoImage(resize_playpause)
-    ppbutton = Button(stream, image=playpause, width=100, font="{Apple LiGothic} 18")
-    ppbutton.grid(row=2, column=2, padx=8, pady=10, sticky=W)
+    ppbutton = Button(stream, image=playpause, command=lambda:playorpause(), width=100, font="{Apple LiGothic} 18")
+    ppbutton.grid(row=4, column=1, padx=8, pady=10, sticky=W)
 
     # play button for songs
     # Khai Dreams Song
