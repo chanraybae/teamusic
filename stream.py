@@ -160,8 +160,6 @@ def play_thread(library, song):
     #songQueue = PriorityQueue()
 
 
-
-
 if __name__ == '__main__':
     # creating our hash table of songs
     library = {
@@ -186,8 +184,6 @@ if __name__ == '__main__':
 
     # Initializing pygame audio mixer
     mixer.init()
-    #loadtomixer(library)
-
 
     # adding logo
     Label(stream, text="\n\n\n\n\n\n\t teamusic", bg="black", fg="white", font="{Apple LiGothic} 10 bold") \
@@ -218,7 +214,6 @@ if __name__ == '__main__':
     playpause = ImageTk.PhotoImage(resize_playpause)
     ppbutton = Button(stream, image=playpause, width=100, font="{Apple LiGothic} 18")
     ppbutton.grid(row=2, column=2, padx=8, pady=10, sticky=W)
-
 
     # play button for songs
     # Khai Dreams Song
