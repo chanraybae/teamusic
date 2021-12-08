@@ -144,7 +144,7 @@ def display_search(playlist, search, album_button, buttonArr,pq):
     i = 0
     search = search.lower()
     for key in playlist:
-        lower_song= key.lower()
+        lower_song = key.lower()
         if search in lower_song:
             buttonArr[0][i] = Button(stream, text=key, width=20,command=lambda song=key:play_thread(library, song), font="{Apple LiGothic} 18")
             buttonArr[0][i].grid(row=2 + i, column=1, padx=8, pady=10, sticky=W)
