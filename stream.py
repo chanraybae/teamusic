@@ -130,6 +130,7 @@ def searchquery(playlist):
         if entered_text in song:
             pq.push(song, 0)
 
+
 def display_search(playlist, search, album_button, buttonArr,pq):
     album_button.grid_remove()
     i = 0
@@ -153,13 +154,11 @@ def display_search(playlist, search, album_button, buttonArr,pq):
             buttonArr[2][i].grid(row=2 + i, column=3, padx=8, pady=10, sticky=W)
         i = i + 1
 
+
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
     mixer.music.load(chosen_song)
     mixer.music.play()
-
-
-
 
 
 def play_thread(library, song):
@@ -174,13 +173,11 @@ def playorpause():
     else:
         mixer.music.unpause()
 
-#def createqueue(playlist):
-    #songQueue = PriorityQueue()
 
 def play_next(pq,song):
-    nextSong=PriorityQueueNode(song, 0)
-    nextSong.next=pq.front
-    pq.front=nextSong
+    nextSong = PriorityQueueNode(song, 0)
+    nextSong.next = pq.front
+    pq.front = nextSong
     #currNode=pq.front
     #while(currNode!=None):
     #    currNode.priority+=1
@@ -189,15 +186,16 @@ def play_next(pq,song):
     print("\n\n\n")
     pq.traverse()
 
+
 def add_to_queue(pq,song):
     if pq.front == None:
         newSong = PriorityQueueNode(song, 0)
         pq.front=newSong
     else:
         currNode = pq.front
-        while (currNode.next!= None):
-            currNode=currNode.next
-        currNode.next=newSong = PriorityQueueNode(song, currNode.priority)
+        while(currNode.next != None):
+            currNode = currNode.next
+        currNode.next = newSong = PriorityQueueNode(song, currNode.priority)
 
     #max=0
     #currNode=pq.front
@@ -208,7 +206,6 @@ def add_to_queue(pq,song):
     #pq.push(song,max+1)
     print("\n\n\n")
     pq.traverse()
-
 
 
 if __name__ == '__main__':
@@ -281,9 +278,6 @@ if __name__ == '__main__':
     #thru_button = Button(stream, image=thru_cover,
                          #command=lambda: play(library, "Through and Through")) \
         #.grid(row=2, column=1, padx=7, pady=100, sticky=W)
-
-
-
 
     stream.mainloop()
 
