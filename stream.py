@@ -207,14 +207,6 @@ def add_to_queue(pq,song, playlist):
     pq.traverse()
 
 
-# def update():
-    # if pq.front is not None:
-        # if (pygame.mixer.music.get_busy() == False):
-            # pq.traverse()
-            # mixer.music.load(str(pq.front))
-            # mixer.music.play()
-
-
 def update_thread():
     t = threading.Thread(target=update, args=())
     t.start()
