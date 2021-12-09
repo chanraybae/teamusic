@@ -7,6 +7,9 @@ from tkinter import *
 from multiprocessing import Process
 from PIL import Image, ImageTk
 
+eventstart = 0
+SONG_END = pygame.USEREVENT + 1
+
 
 # Creating the Priority Queue class to use for linking songs in the queue
 class PriorityQueueNode:
@@ -113,11 +116,6 @@ class PriorityQueue:
                 temp = temp.next
 
 
-# defines which song shall be chosen
-def choose_song():
-    return -1
-
-
 def display_search(playlist, search, album_button, buttonArr, pq, targ_frame):
     album_button.grid_remove()
     i = 0
@@ -161,14 +159,16 @@ def play_thread(library, song):
     t = threading.Thread(target=play, args=(library, song))
     t.start()
 
+
 def skip_song(library, pq):
-    if (pq.front==None):
+    if(pq.front == None):
         return
-    song=pq.front.data
+    song = pq.front.data
     pq.pop()
     print("\n")
     pq.traverse()
     play_thread(library, song)
+
 
 # difference is that this function simply plays or pauses the current song playing in queue instead of referencing
 def playorpause():
@@ -183,42 +183,84 @@ def play_next(pq,song, playlist):
     nextSong.next = pq.front
     pq.front = nextSong
 
-    pygame.mixer.music.queue(str(playlist[song]))
+    global eventstart
+    eventstart += 1
+
+    pygame.mixer.music.set_endevent(SONG_END)
+    if pygame.mixer.music.get_busy():
+        pygame.mixer.music.queue(str(playlist[song]))
+    else:
+        mixer.music.load(str(playlist[song]))
+        mixer.music.play()
+        pq.pop()
+
     print("\n\n\n")
+    print(eventstart)
     pq.traverse()
 
 
 def add_to_queue(pq,song, playlist):
+    global eventstart
+    eventstart += 1
+
+    pygame.mixer.music.set_endevent(SONG_END)
+
     if pq.front == None:
         newSong = PriorityQueueNode(song, 0)
         pq.front = newSong
-        pygame.mixer.music.queue(str(playlist[song]))
+        if pygame.mixer.music.get_busy():
+            pygame.mixer.music.queue(str(playlist[song]))
+        else:
+            mixer.music.load(str(playlist[song]))
+            mixer.music.play()
+            pq.pop()
     else:
         currNode = pq.front
-        while(currNode.next != None):
+        while(currNode.next is not None):
             currNode = currNode.next
         currNode.next = newSong = PriorityQueueNode(song, currNode.priority)
-        pygame.mixer.music.queue(str(playlist[song]))
+        if pygame.mixer.music.get_busy():
+            pygame.mixer.music.queue(str(playlist[song]))
+        else:
+            mixer.music.load(str(playlist[song]))
+            mixer.music.play()
+            pq.pop()
+
     print("\n\n\n")
     pq.traverse()
+
+
+# detects if a song has ended and removes it from the Priority Queue (demonstrated when traversed)
+def songend():
+    var = True
+    while var:
+        global eventstart
+        global SONG_END
+
+        if eventstart > 0:
+            for event in pygame.event.get():
+                if event.type == SONG_END:
+                    pq.pop()
 
 
 if __name__ == '__main__':
     # creating our hash table of songs
     library = {
+        'Bruh - Test': 'bruh.mp3',
         'Through and Through - Khai Dreams': 'thru.mp3',
         'Adore You - Harry Styles': 'adoreyou.mp3',
         'Love Me Back - Social House': 'lovemeback.mp3'
     }
 
+    # creating an instance of the priority queue
     pq = PriorityQueue()
-    pq.traverse()
 
     # button array for search results
-    buttonArr1 = [[0 for x in range(3)] for x in range(len(library))]
-    buttonArr2 = [[0 for x in range(3)] for x in range(len(library))]
-    buttonArr3 = [[0 for x in range(3)] for x in range(len(library))]
-    buttonArr4 = [[0 for x in range(3)] for x in range(len(library))]
+    # second for x in range refers to the number of buttons we have after search (3 buttons)
+    buttonArr1 = [[0 for x in range(len(library))] for x in range(3)]
+    buttonArr2 = [[0 for x in range(len(library))] for x in range(3)]
+    buttonArr3 = [[0 for x in range(len(library))] for x in range(3)]
+    buttonArr4 = [[0 for x in range(len(library))] for x in range(3)]
 
     ############################################
 
@@ -229,7 +271,9 @@ if __name__ == '__main__':
     stream.configure(background="black")
 
     mixer.init()
-
+    pygame.init()
+    t = threading.Thread(target=songend, args=())
+    t.start()
     ############################################
 
     # preparing images for inclusion in GUI
