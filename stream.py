@@ -161,6 +161,14 @@ def play_thread(library, song):
     t = threading.Thread(target=play, args=(library, song))
     t.start()
 
+def skip_song(library, pq):
+    if (pq.front==None):
+        return
+    song=pq.front.data
+    pq.pop()
+    print("\n")
+    pq.traverse()
+    play_thread(library, song)
 
 # difference is that this function simply plays or pauses the current song playing in queue instead of referencing
 def playorpause():
@@ -281,8 +289,11 @@ if __name__ == '__main__':
 
     # skip button
     skipbutton1 = Button(frame1, image=skipsong, bg="black",
-                       command=lambda: playorpause(), bd = 0)
+                       command=lambda: skip_song(library,pq), bd = 0)
     skipbutton1.place(x=25, y=375)
+
+    theCanvas = Canvas(frame1,bg="white",width=100, height=50)
+    queueRect=theCanvas.create_rectangle(50,0,100,50,fill='red')
 
     # subframe
 
