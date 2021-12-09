@@ -142,12 +142,12 @@ def display_search(playlist, search, album_button, buttonArr, pq, targ_frame):
             buttonArr[0][i] = Button(targ_frame, text=key, width=30,command=lambda song=key:play_thread(library, song),
                                      font="{Apple LiGothic} 9", bg='#231f20', fg='white')
             buttonArr[0][i].grid(row=2 + i, column=1, padx=8, pady=10, sticky=W)
-            buttonArr[1][i] = Button(targ_frame, text="Play Next",command=lambda song=key:play_next(pq,song), width=8, font="{Apple LiGothic} 9", bg='#231f20', fg='white')
+            buttonArr[1][i] = Button(targ_frame, text="Play Next",command=lambda song=key:play_next(pq, song, playlist), width=8, font="{Apple LiGothic} 9", bg='#231f20', fg='white')
             buttonArr[1][i].grid(row=2 + i, column=2, padx=8, pady=10, sticky=W)
-            buttonArr[2][i] = Button(targ_frame, text="Add to Queue",command=lambda song=key:add_to_queue(pq,song), width=15, font="{Apple LiGothic} 9", bg='#231f20', fg='white')
+            buttonArr[2][i] = Button(targ_frame, text="Add to Queue",command=lambda song=key:add_to_queue(pq, song, playlist), width=15, font="{Apple LiGothic} 9", bg='#231f20', fg='white')
             buttonArr[2][i].grid(row=2 + i, column=3, padx=8, pady=10, sticky=W)
         i = i + 1
-    threading.Thread(target=update_thread()).start()
+    #threading.Thread(target=update_thread()).start()
 
 
 def play(playlist, song_name):
@@ -169,7 +169,7 @@ def playorpause():
         mixer.music.unpause()
 
 
-def play_next(pq,song):
+def play_next(pq,song, playlist):
     nextSong = PriorityQueueNode(song, 0)
     nextSong.next = pq.front
     pq.front = nextSong
@@ -178,20 +178,23 @@ def play_next(pq,song):
     #    currNode.priority+=1
     #    currNode=currNode.next
     #pq.push(song,0)
+    pygame.mixer.music.queue(str(playlist[song]))
     print("\n\n\n")
-    threading.Thread(target=update_thread()).start()
+    #threading.Thread(target=update_thread()).start()
     pq.traverse()
 
 
-def add_to_queue(pq,song):
+def add_to_queue(pq,song, playlist):
     if pq.front == None:
         newSong = PriorityQueueNode(song, 0)
         pq.front = newSong
+        pygame.mixer.music.queue(str(playlist[song]))
     else:
         currNode = pq.front
         while(currNode.next != None):
             currNode = currNode.next
         currNode.next = newSong = PriorityQueueNode(song, currNode.priority)
+        pygame.mixer.music.queue(str(playlist[song]))
     #max=0
     #currNode=pq.front
     #while(currNode!=None):
@@ -200,16 +203,16 @@ def add_to_queue(pq,song):
     #    currNode = currNode.next
     #pq.push(song,max+1)
     print("\n\n\n")
-    threading.Thread(target=update_thread()).start()
+    #threading.Thread(target=update_thread()).start()
     pq.traverse()
 
 
-def update():
-    if pq.front is not None:
-        if (pygame.mixer.music.get_busy() == False):
-            pq.traverse()
-            mixer.music.load(str(pq.front))
-            mixer.music.play()
+# def update():
+    # if pq.front is not None:
+        # if (pygame.mixer.music.get_busy() == False):
+            # pq.traverse()
+            # mixer.music.load(str(pq.front))
+            # mixer.music.play()
 
 
 def update_thread():
@@ -232,9 +235,9 @@ if __name__ == '__main__':
     #pq.push("yo", 0)
     pq.traverse()
 
-    threading.Thread(target=update_thread()).start()
-    p1 = Process(target=update_thread())
-    p1.start()
+    #threading.Thread(target=update_thread()).start()
+    #p1 = Process(target=update_thread())
+    #p1.start()
 
     # button array for search results
     buttonArr1 = [[0 for x in range(3)] for x in range(len(library))]
@@ -263,7 +266,7 @@ if __name__ == '__main__':
 
     # setting up the play/pause button
     playpause_orig = Image.open("playpause.png")
-    resize_playpause = playpause_orig.resize((25, 19))
+    resize_playpause = playpause_orig.resize((25, 25))
     playpause = ImageTk.PhotoImage(resize_playpause)
 
     # Khai Dreams Through and Through
@@ -300,8 +303,8 @@ if __name__ == '__main__':
 
     # play button
     ppbutton1 = Button(frame1, image=playpause, bg="black",
-                       command=lambda: playorpause(), bd = 0)
-    ppbutton1.place(x=30, y=425)
+                       command=lambda: playorpause())
+    ppbutton1.place(x=25, y=425)
 
     # subframe
 
@@ -329,7 +332,7 @@ if __name__ == '__main__':
     label2.grid(row=1, column=0, padx=15, pady=5)
 
     # Welcome, Thomas
-    welcome2 = Label(frame2, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome2 = Label(frame2, text="Welcome, Ray", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
     welcome2.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 
     # search bar and button
@@ -342,8 +345,8 @@ if __name__ == '__main__':
 
     # play button
     ppbutton2 = Button(frame2, image=playpause, bg="black",
-                       command=lambda: playorpause(), bd = 0)
-    ppbutton2.place(x=30, y=425)
+                       command=lambda: playorpause())
+    ppbutton2.place(x=25, y=425)
 
     # subframe
 
@@ -371,7 +374,7 @@ if __name__ == '__main__':
     label3.grid(row=1, column=0, padx=15, pady=5)
 
     # Welcome, Thomas
-    welcome3 = Label(frame3, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome3 = Label(frame3, text="Welcome, Katie", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
     welcome3.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 
     # search bar and button
@@ -384,8 +387,8 @@ if __name__ == '__main__':
 
     # play button
     ppbutton3 = Button(frame3, image=playpause, bg="black",
-                       command=lambda: playorpause(), bd = 0)
-    ppbutton3.place(x=30, y=425)
+                       command=lambda: playorpause())
+    ppbutton3.place(x=25, y=425)
 
     # subframe
 
@@ -413,7 +416,7 @@ if __name__ == '__main__':
     label4.grid(row=1, column=0, padx=15, pady=5)
 
     # Welcome, Thomas
-    welcome4 = Label(frame4, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome4 = Label(frame4, text="Welcome, Rory", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
     welcome4.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 
     # search bar and button
@@ -426,8 +429,8 @@ if __name__ == '__main__':
 
     # play button
     ppbutton4 = Button(frame4, image=playpause, bg="black",
-                       command=lambda: playorpause(), bd = 0)
-    ppbutton4.place(x=30, y=425)
+                       command=lambda: playorpause())
+    ppbutton4.place(x=25, y=425)
 
     # subframe
 
