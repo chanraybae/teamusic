@@ -259,6 +259,19 @@ def current_queue():
         upcoming.append(Label(group_display1, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
         upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
         upcoming[count].grid_propagate(0)
+
+        upcoming.append(Label(group_display2, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
+        upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
+        upcoming[count].grid_propagate(0)
+
+        upcoming.append(Label(group_display3, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
+        upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
+        upcoming[count].grid_propagate(0)
+
+        upcoming.append(Label(group_display4, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
+        upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
+        upcoming[count].grid_propagate(0)
+
         temp = temp.next
         count += 1
 
