@@ -9,7 +9,8 @@ from PIL import Image, ImageTk
 
 eventstart = 0
 SONG_END = pygame.USEREVENT + 1
-
+upcoming = []
+count = 0
 
 # Creating the Priority Queue class to use for linking songs in the queue
 class PriorityQueueNode:
@@ -24,7 +25,6 @@ class PriorityQueueNode:
 class PriorityQueue:
 
     def __init__(self):
-
         self.front = None
 
     # Method to check Priority Queue is Empty
@@ -149,6 +149,7 @@ def back_to_main(playlist, buttonArr, album_button):
     # puts logos back
     album_button.grid(row=0, column=0, padx=5, pady=5)
 
+
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
     mixer.music.load(chosen_song)
@@ -165,6 +166,8 @@ def skip_song(library, pq):
         return
     song = pq.front.data
     pq.pop()
+    current_queue()
+
     print("\n")
     pq.traverse()
     play_thread(library, song)
@@ -179,6 +182,9 @@ def playorpause():
 
 
 def play_next(pq,song, playlist):
+    global count
+    count += 1
+
     nextSong = PriorityQueueNode(song, 0)
     nextSong.next = pq.front
     pq.front = nextSong
@@ -189,11 +195,13 @@ def play_next(pq,song, playlist):
     pygame.mixer.music.set_endevent(SONG_END)
     if pygame.mixer.music.get_busy():
         pygame.mixer.music.queue(str(playlist[song]))
+        current_queue()
     else:
         mixer.music.load(str(playlist[song]))
         mixer.music.play()
         pq.pop()
 
+    #current_queue()
     print("\n\n\n")
     print(eventstart)
     pq.traverse()
@@ -201,7 +209,9 @@ def play_next(pq,song, playlist):
 
 def add_to_queue(pq,song, playlist):
     global eventstart
+    global count
     eventstart += 1
+    count += 1
 
     pygame.mixer.music.set_endevent(SONG_END)
 
@@ -210,17 +220,20 @@ def add_to_queue(pq,song, playlist):
         pq.front = newSong
         if pygame.mixer.music.get_busy():
             pygame.mixer.music.queue(str(playlist[song]))
+            current_queue()
         else:
             mixer.music.load(str(playlist[song]))
             mixer.music.play()
             pq.pop()
+
     else:
         currNode = pq.front
-        while(currNode.next is not None):
+        while(currNode.next != None):
             currNode = currNode.next
         currNode.next = newSong = PriorityQueueNode(song, currNode.priority)
         if pygame.mixer.music.get_busy():
             pygame.mixer.music.queue(str(playlist[song]))
+            current_queue()
         else:
             mixer.music.load(str(playlist[song]))
             mixer.music.play()
@@ -230,23 +243,45 @@ def add_to_queue(pq,song, playlist):
     pq.traverse()
 
 
+# updates the window subframe that displays the upcoming songs and appropriately adjusts for skips
+def current_queue():
+    global count
+    global upcoming
+    fix = len(upcoming)
+    for i in range(fix):
+        upcoming[i].grid_forget()
+    for j in range(fix):
+        upcoming.pop(0)
+
+    count = 0
+    temp = pq.front
+    while temp:
+        upcoming.append(Label(group_display1, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
+        upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
+        upcoming[count].grid_propagate(0)
+        temp = temp.next
+        count += 1
+
+
 # detects if a song has ended and removes it from the Priority Queue (demonstrated when traversed)
 def songend():
-    var = True
-    while var:
+    while True:
         global eventstart
         global SONG_END
+        global count
 
         if eventstart > 0:
             for event in pygame.event.get():
                 if event.type == SONG_END:
                     pq.pop()
+                    current_queue()
+                    count -= 1
 
 
 if __name__ == '__main__':
     # creating our hash table of songs
     library = {
-        'Bruh - Test': 'bruh.mp3',
+        'Bruh - test': 'bruh.mp3',
         'Through and Through - Khai Dreams': 'thru.mp3',
         'Adore You - Harry Styles': 'adoreyou.mp3',
         'Love Me Back - Social House': 'lovemeback.mp3'
@@ -272,8 +307,11 @@ if __name__ == '__main__':
 
     mixer.init()
     pygame.init()
-    t = threading.Thread(target=songend, args=())
-    t.start()
+
+    # making the function to check if a song has ended continually
+    checkforend = threading.Thread(target=songend, args=())
+    checkforend.start()
+
     ############################################
 
     # preparing images for inclusion in GUI
@@ -321,10 +359,10 @@ if __name__ == '__main__':
     # search bar and button
     searchbar1 = Entry(frame1, width=60, bg="white", font="{Apple LiGothic} 9")
     searchbar1.grid(row=0, column=1, padx=10, pady=5, sticky=W)
-    searchbutton1 = Button(frame1, text="Search", width=6, font="{Apple LiGothic} 9",
+    searchbutton1 = Button(frame1, text="Search", width=6, font="{Apple LiGothic} 7",
                            command=lambda: display_search(library, searchbar1.get(), thru_button1, buttonArr1, pq,
                                                           subframe1))
-    searchbutton1.grid(row=0, column=2, padx=5, pady=5)
+    searchbutton1.place(x=525, y=15)
 
     # play button
     ppbutton1 = Button(frame1, image=playpause, bg="black",
@@ -332,8 +370,7 @@ if __name__ == '__main__':
     ppbutton1.place(x=25, y=425)
 
     # skip button
-    skipbutton1 = Button(frame1, image=skipsong, bg="black",
-                       command=lambda: skip_song(library,pq), bd = 0)
+    skipbutton1 = Button(frame1, image=skipsong, bg="black", command=lambda: skip_song(library,pq), bd = 0)
     skipbutton1.place(x=25, y=375)
 
     theCanvas = Canvas(frame1,bg="white",width=100, height=50)
@@ -348,6 +385,14 @@ if __name__ == '__main__':
     thru_button1 = Button(subframe1, image=thru_cover,
                           command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
     thru_button1.grid(row=0, column=0, padx=5, pady=5)
+
+    # subframe for group queue here
+
+    group_display1 = Frame(frame1, width=100, height=300, bg='#231f20')
+    group_display1.place(x=595, y=15)
+    upcomingtitle1 = Label(group_display1, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
+    upcomingtitle1.grid(row=1, column=1, padx=0, pady=0, sticky=W)
+    upcomingtitle1.grid_propagate(0)
 
     ############################################
 
@@ -372,10 +417,10 @@ if __name__ == '__main__':
     # search bar and button
     searchbar2 = Entry(frame2, width=60, bg="white", font="{Apple LiGothic} 9")
     searchbar2.grid(row=0, column=1, padx=10, pady=5, sticky=W)
-    searchbutton2 = Button(frame2, text="Search", width=6, font="{Apple LiGothic} 9",
+    searchbutton2 = Button(frame2, text="Search", width=6, font="{Apple LiGothic} 7",
                            command=lambda: display_search(library, searchbar2.get(), thru_button2, buttonArr2, pq,
                                                           subframe2))
-    searchbutton2.grid(row=0, column=2, padx=5, pady=5)
+    searchbutton2.place(x=525, y=15)
 
     # play button
     ppbutton2 = Button(frame2, image=playpause, bg="black",
@@ -383,8 +428,7 @@ if __name__ == '__main__':
     ppbutton2.place(x=25, y=425)
 
     # skip button
-    skipbutton2 = Button(frame2, image=skipsong, bg="black",
-                       command=lambda: playorpause(), bd = 0)
+    skipbutton2 = Button(frame2, image=skipsong, bg="black", command=lambda: playorpause(), bd = 0)
     skipbutton2.place(x=25, y=375)
 
     # subframe
@@ -396,6 +440,14 @@ if __name__ == '__main__':
     thru_button2 = Button(subframe2, image=thru_cover,
                           command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
     thru_button2.grid(row=0, column=0, padx=5, pady=5)
+
+    # subframe for group queue here
+
+    group_display2 = Frame(frame2, width=100, height=300, bg='#231f20')
+    group_display2.place(x=595, y=15)
+    upcomingtitle2 = Label(group_display2, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
+    upcomingtitle2.grid(row=1, column=1, padx=0, pady=0, sticky=W)
+    upcomingtitle2.grid_propagate(0)
 
     ############################################
 
@@ -420,10 +472,10 @@ if __name__ == '__main__':
     # search bar and button
     searchbar3 = Entry(frame3, width=60, bg="white", font="{Apple LiGothic} 9")
     searchbar3.grid(row=0, column=1, padx=10, pady=5, sticky=W)
-    searchbutton3 = Button(frame3, text="Search", width=6, font="{Apple LiGothic} 9",
+    searchbutton3 = Button(frame3, text="Search", width=6, font="{Apple LiGothic} 7",
                            command=lambda: display_search(library, searchbar3.get(), thru_button3, buttonArr3, pq,
                                                           subframe3))
-    searchbutton3.grid(row=0, column=2, padx=5, pady=5)
+    searchbutton3.place(x=525, y=15)
 
     # play button
     ppbutton3 = Button(frame3, image=playpause, bg="black",
@@ -431,8 +483,7 @@ if __name__ == '__main__':
     ppbutton3.place(x=25, y=425)
 
     # skip button
-    skipbutton3 = Button(frame3, image=skipsong, bg="black",
-                       command=lambda: playorpause(), bd = 0)
+    skipbutton3 = Button(frame3, image=skipsong, bg="black", command=lambda: playorpause(), bd = 0)
     skipbutton3.place(x=25, y=375)
 
     # subframe
@@ -444,6 +495,14 @@ if __name__ == '__main__':
     thru_button3 = Button(subframe3, image=thru_cover,
                           command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
     thru_button3.grid(row=0, column=0, padx=5, pady=5)
+
+    # subframe for group queue here
+
+    group_display3 = Frame(frame3, width=100, height=300, bg='#231f20')
+    group_display3.place(x=595, y=15)
+    upcomingtitle3 = Label(group_display3, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
+    upcomingtitle3.grid(row=1, column=1, padx=0, pady=0, sticky=W)
+    upcomingtitle3.grid_propagate(0)
 
     ############################################
 
@@ -468,10 +527,10 @@ if __name__ == '__main__':
     # search bar and button
     searchbar4 = Entry(frame4, width=60, bg="white", font="{Apple LiGothic} 9")
     searchbar4.grid(row=0, column=1, padx=10, pady=5, sticky=W)
-    searchbutton4 = Button(frame4, text="Search", width=6, font="{Apple LiGothic} 9",
+    searchbutton4 = Button(frame4, text="Search", width=6, font="{Apple LiGothic} 7",
                            command=lambda: display_search(library, searchbar4.get(), thru_button4, buttonArr4, pq,
                                                           subframe4))
-    searchbutton4.grid(row=0, column=2, padx=5, pady=5)
+    searchbutton4.place(x=525, y=15)
 
     # play button
     ppbutton4 = Button(frame4, image=playpause, bg="black",
@@ -479,8 +538,7 @@ if __name__ == '__main__':
     ppbutton4.place(x=25, y=425)
 
     # skip button
-    skipbutton4 = Button(frame4, image=skipsong, bg="black",
-                       command=lambda: playorpause(), bd = 0)
+    skipbutton4 = Button(frame4, image=skipsong, bg="black", command=lambda: playorpause(), bd = 0)
     skipbutton4.place(x=25, y=375)
 
     # subframe
@@ -493,8 +551,15 @@ if __name__ == '__main__':
                           command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
     thru_button4.grid(row=0, column=0, padx=5, pady=5)
 
+    # subframe for group queue here
+
+    group_display4 = Frame(frame4, width=100, height=300, bg='#231f20')
+    group_display4.place(x=595, y=15)
+    upcomingtitle4 = Label(group_display4, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
+    upcomingtitle4.grid(row=1, column=1, padx=0, pady=0, sticky=W)
+    upcomingtitle4.grid_propagate(0)
+
     ############################################
-    # test
 
     stream.mainloop()
 
