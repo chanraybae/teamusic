@@ -13,7 +13,7 @@ def display_search(playlist, search, album_button, buttonArr, targ_frame):
     album_button.grid_remove()
     i = 0
     j = 0
-    for j in range(4):
+    for j in range(3):
         for i in range(len(playlist)):
             if (buttonArr[j][i]!=0):
                 buttonArr[j][i].grid_remove()
@@ -24,7 +24,7 @@ def display_search(playlist, search, album_button, buttonArr, targ_frame):
     for key in playlist:
         lower_song= key.lower()
         if search in lower_song:
-            buttonArr[0][i] = Button(targ_frame, text=key, width=20,command=lambda song=key:play_thread(library, song), font="{Apple LiGothic} 12 bold")
+            buttonArr[0][i] = Button(targ_frame, text=key, width=20,command=lambda song=key:play_thread(library, song), font="{Apple LiGothic} 9 bold")
             buttonArr[0][i].grid(row=2 + i, column=1, padx=5, pady=10, sticky=W)
             buttonArr[1][i] = Button(targ_frame, text="Play Next", width=8, font="{Apple LiGothic} 9")
             buttonArr[1][i].grid(row=2 + i, column=2, padx=5, pady=10, sticky=W)
@@ -53,16 +53,16 @@ def playorpause():
 
 # library of songs
 library = {
-    'Through and Through': 'thru.mp3',
-    'Adore You': 'adoreyou.mp3',
-    'Love Me Back': 'lovemeback.mp3'
+    'Through and Through - Khai Dreams': 'thru.mp3',
+    'Adore You - Harry Styles': 'adoreyou.mp3',
+    'Love Me Back - Social House': 'lovemeback.mp3'
 }
 
 # button array for search results
-buttonArr1 = [[0 for x in range(4)] for x in range(4)]
-buttonArr2 = [[0 for x in range(4)] for x in range(4)]
-buttonArr3 = [[0 for x in range(4)] for x in range(4)]
-buttonArr4 = [[0 for x in range(4)] for x in range(4)]
+buttonArr1 = [[0 for x in range(3)] for x in range(len(library))]
+buttonArr2 = [[0 for x in range(3)] for x in range(len(library))]
+buttonArr3 = [[0 for x in range(3)] for x in range(len(library))]
+buttonArr4 = [[0 for x in range(3)] for x in range(len(library))]
 
 ############################################
 
@@ -90,7 +90,7 @@ playpause = ImageTk.PhotoImage(resize_playpause)
 
 # Khai Dreams Through and Through
 thru_cover_orig = Image.open("thru.png")
-resize_thru_cover = thru_cover_orig.resize((250,150))
+resize_thru_cover = thru_cover_orig.resize((250, 150))
 thru_cover= ImageTk.PhotoImage(resize_thru_cover)
 
 ############################################
@@ -130,7 +130,7 @@ subframe1 = Frame(frame1, width=300, height=250, bg="#0D0D0D")
 subframe1.grid(row=2, column=1, padx=5, pady=5)
 
 thru_button1 = Button(subframe1, image=thru_cover,
-                      command=lambda: play_thread(library, "Through and Through"))
+                      command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
 thru_button1.grid(row=0, column=0, padx=5, pady=5)
 
 ############################################
@@ -144,8 +144,8 @@ frame2.grid_propagate(0)
 # teamusic logo
 logolabel2 = Label(frame2, image=logo, bg="black")
 logolabel2.grid(row=0, column=0, padx=5, pady=5)
-label2=Label(frame2, text="teamusic", bg="black",
-             font = "{Apple LiGothic} 6 bold", fg="white")
+label2 = Label(frame2, text="teamusic", bg="black",
+               font="{Apple LiGothic} 6 bold", fg="white")
 label2.grid(row=1, column=0, padx=5, pady=5)
 
 # Welcome, Thomas
@@ -169,7 +169,7 @@ subframe2 = Frame(frame2, width=300, height=250, bg="#0D0D0D")
 subframe2.grid(row=2, column=1, padx=5, pady=5)
 
 thru_button2 = Button(subframe2, image=thru_cover,
-                      command=lambda: play_thread(library, "Through and Through"))
+                      command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
 thru_button2.grid(row=0, column=0, padx=5, pady=5)
 
 ############################################
@@ -209,7 +209,7 @@ subframe3 = Frame(frame3, width=300, height=250, bg="#0D0D0D")
 subframe3.grid(row=2, column=1, padx=5, pady=5)
 
 thru_button3 = Button(subframe3, image=thru_cover,
-                      command=lambda: play_thread(library, "Through and Through"))
+                      command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
 thru_button3.grid(row=0, column=0, padx=5, pady=5)
 
 ############################################
@@ -249,7 +249,7 @@ subframe4 = Frame(frame4, width=300, height=250, bg="#0D0D0D")
 subframe4.grid(row=2, column=1, padx=5, pady=5)
 
 thru_button4 = Button(subframe4, image=thru_cover,
-                      command=lambda: play_thread(library, "Through and Through"))
+                      command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
 thru_button4.grid(row=0, column=0, padx=5, pady=5)
 
 ############################################
