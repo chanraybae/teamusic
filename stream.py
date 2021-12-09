@@ -113,12 +113,6 @@ class PriorityQueue:
                 temp = temp.next
 
 
-# loads all the songs into the pygame mixer tool
-#def loadtomixer(playlist):
-    #for song in playlist:
-        #mixer.music.load(playlist[song])
-
-
 # defines which song shall be chosen
 def choose_song():
     return -1
@@ -147,7 +141,6 @@ def display_search(playlist, search, album_button, buttonArr, pq, targ_frame):
             buttonArr[2][i] = Button(targ_frame, text="Add to Queue",command=lambda song=key:add_to_queue(pq, song, playlist), width=15, font="{Apple LiGothic} 9", bg='#231f20', fg='white')
             buttonArr[2][i].grid(row=2 + i, column=3, padx=8, pady=10, sticky=W)
         i = i + 1
-    #threading.Thread(target=update_thread()).start()
 
 
 def play(playlist, song_name):
@@ -173,14 +166,9 @@ def play_next(pq,song, playlist):
     nextSong = PriorityQueueNode(song, 0)
     nextSong.next = pq.front
     pq.front = nextSong
-    #currNode=pq.front
-    #while(currNode!=None):
-    #    currNode.priority+=1
-    #    currNode=currNode.next
-    #pq.push(song,0)
+
     pygame.mixer.music.queue(str(playlist[song]))
     print("\n\n\n")
-    #threading.Thread(target=update_thread()).start()
     pq.traverse()
 
 
@@ -195,21 +183,8 @@ def add_to_queue(pq,song, playlist):
             currNode = currNode.next
         currNode.next = newSong = PriorityQueueNode(song, currNode.priority)
         pygame.mixer.music.queue(str(playlist[song]))
-    #max=0
-    #currNode=pq.front
-    #while(currNode!=None):
-    #    if (currNode.priority>max):
-    #        max=currNode.priority
-    #    currNode = currNode.next
-    #pq.push(song,max+1)
     print("\n\n\n")
-    #threading.Thread(target=update_thread()).start()
     pq.traverse()
-
-
-def update_thread():
-    t = threading.Thread(target=update, args=())
-    t.start()
 
 
 if __name__ == '__main__':
@@ -221,15 +196,7 @@ if __name__ == '__main__':
     }
 
     pq = PriorityQueue()
-    #pq.push("thru.mp3", 1)
-    #pq.push("hi", 2)
-    #pq.push("wassup", 3)
-    #pq.push("yo", 0)
     pq.traverse()
-
-    #threading.Thread(target=update_thread()).start()
-    #p1 = Process(target=update_thread())
-    #p1.start()
 
     # button array for search results
     buttonArr1 = [[0 for x in range(3)] for x in range(len(library))]
