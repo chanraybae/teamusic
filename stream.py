@@ -303,7 +303,7 @@ if __name__ == '__main__':
 
     # play button
     ppbutton1 = Button(frame1, image=playpause, bg="black",
-                       command=lambda: playorpause())
+                       command=lambda: playorpause(), bd = 0)
     ppbutton1.place(x=25, y=425)
 
     # subframe
@@ -345,7 +345,7 @@ if __name__ == '__main__':
 
     # play button
     ppbutton2 = Button(frame2, image=playpause, bg="black",
-                       command=lambda: playorpause())
+                       command=lambda: playorpause(), bd = 0)
     ppbutton2.place(x=25, y=425)
 
     # subframe
@@ -387,7 +387,7 @@ if __name__ == '__main__':
 
     # play button
     ppbutton3 = Button(frame3, image=playpause, bg="black",
-                       command=lambda: playorpause())
+                       command=lambda: playorpause(), bd = 0)
     ppbutton3.place(x=25, y=425)
 
     # subframe
@@ -429,7 +429,7 @@ if __name__ == '__main__':
 
     # play button
     ppbutton4 = Button(frame4, image=playpause, bg="black",
-                       command=lambda: playorpause())
+                       command=lambda: playorpause(), bd = 0)
     ppbutton4.place(x=25, y=425)
 
     # subframe
