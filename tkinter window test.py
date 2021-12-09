@@ -24,11 +24,11 @@ def display_search(playlist, search, album_button, buttonArr, targ_frame):
     for key in playlist:
         lower_song= key.lower()
         if search in lower_song:
-            buttonArr[0][i] = Button(targ_frame, text=key, width=20,command=lambda song=key:play_thread(library, song), font="{Apple LiGothic} 9 bold")
+            buttonArr[0][i] = Button(targ_frame, text=key, width=30,command=lambda song=key:play_thread(library, song), font="{Apple LiGothic} 9 bold")
             buttonArr[0][i].grid(row=2 + i, column=1, padx=5, pady=10, sticky=W)
             buttonArr[1][i] = Button(targ_frame, text="Play Next", width=8, font="{Apple LiGothic} 9")
             buttonArr[1][i].grid(row=2 + i, column=2, padx=5, pady=10, sticky=W)
-            buttonArr[2][i] = Button(targ_frame, text="Add to Queue", width=8, font="{Apple LiGothic} 9")
+            buttonArr[2][i] = Button(targ_frame, text="Add to Queue", width=15, font="{Apple LiGothic} 9")
             buttonArr[2][i].grid(row=2 + i, column=3, padx=5, pady=10, sticky=W)
         i = i + 1
 
@@ -115,7 +115,7 @@ welcome1.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 # search bar and button
 searchbar1 = Entry(frame1, width=35, bg="white", font="{Apple LiGothic} 9")
 searchbar1.grid(row=0, column=1, padx=5, pady=5, sticky=W)
-searchbutton1 = Button(frame1, text="Search", width=3, font="{Apple LiGothic} 9",
+searchbutton1 = Button(frame1, text="Search", width=6, font="{Apple LiGothic} 9",
                        command=lambda: display_search(library, searchbar1.get(), thru_button1, buttonArr1, subframe1))
 searchbutton1.grid(row=0, column=2, padx=5, pady=5)
 
@@ -155,7 +155,7 @@ welcome2.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 # search bar and button
 searchbar2 = Entry(frame2, width=35, bg="white", font="{Apple LiGothic} 9")
 searchbar2.grid(row=0, column=1, padx=5, pady=5, sticky=W)
-searchbutton2 = Button(frame2, text="Search", width=3, font="{Apple LiGothic} 9",
+searchbutton2 = Button(frame2, text="Search", width=6, font="{Apple LiGothic} 9",
                        command=lambda: display_search(library, searchbar2.get(), thru_button2, buttonArr2, subframe2))
 searchbutton2.grid(row=0, column=2, padx=5, pady=5)
 
@@ -194,7 +194,7 @@ welcome3.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 # search bar and button
 searchbar3 = Entry(frame3, width=35, bg="white", font="{Apple LiGothic} 9")
 searchbar3.grid(row=0, column=1, padx=5, pady=5, sticky=W)
-searchbutton3 = Button(frame3, text="Search", width=3, font="{Apple LiGothic} 9",
+searchbutton3 = Button(frame3, text="Search", width=6, font="{Apple LiGothic} 9",
                        command=lambda: display_search(library, searchbar3.get(), thru_button3, buttonArr3, subframe3))
 searchbutton3.grid(row=0, column=2, padx=5, pady=5)
 
@@ -234,7 +234,7 @@ welcome4.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 # search bar and button
 searchbar4 = Entry(frame4, width=35, bg="white", font="{Apple LiGothic} 9")
 searchbar4.grid(row=0, column=1, padx=5, pady=5, sticky=W)
-searchbutton4 = Button(frame4, text="Search", width=3, font="{Apple LiGothic} 9",
+searchbutton4 = Button(frame4, text="Search", width=6, font="{Apple LiGothic} 9",
                        command=lambda: display_search(library, searchbar4.get(), thru_button4, buttonArr4, subframe4))
 searchbutton4.grid(row=0, column=2, padx=5, pady=5)
 

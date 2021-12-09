@@ -123,7 +123,8 @@ class PriorityQueue:
 def choose_song():
     return -1
 
-def display_search(playlist, search, album_button, buttonArr,pq):
+
+def display_search(playlist, search, album_button, buttonArr, pq, targ_frame):
     album_button.grid_remove()
     i = 0
     j=0
@@ -138,12 +139,12 @@ def display_search(playlist, search, album_button, buttonArr,pq):
     for key in playlist:
         lower_song = key.lower()
         if search in lower_song:
-            buttonArr[0][i] = Button(stream, text=key, width=30,command=lambda song=key:play_thread(library, song),
-                                     font="{Apple LiGothic} 18", bg='#231f20', fg='white')
+            buttonArr[0][i] = Button(targ_frame, text=key, width=30,command=lambda song=key:play_thread(library, song),
+                                     font="{Apple LiGothic} 9", bg='#231f20', fg='white')
             buttonArr[0][i].grid(row=2 + i, column=1, padx=8, pady=10, sticky=W)
-            buttonArr[1][i] = Button(stream, text="Play Next",command=lambda song=key:play_next(pq,song), width=10, font="{Apple LiGothic} 18", bg='#231f20', fg='white')
+            buttonArr[1][i] = Button(targ_frame, text="Play Next",command=lambda song=key:play_next(pq,song), width=8, font="{Apple LiGothic} 9", bg='#231f20', fg='white')
             buttonArr[1][i].grid(row=2 + i, column=2, padx=8, pady=10, sticky=W)
-            buttonArr[2][i] = Button(stream, text="Add to Queue",command=lambda song=key:add_to_queue(pq,song), width=15, font="{Apple LiGothic} 18", bg='#231f20', fg='white')
+            buttonArr[2][i] = Button(targ_frame, text="Add to Queue",command=lambda song=key:add_to_queue(pq,song), width=15, font="{Apple LiGothic} 9", bg='#231f20', fg='white')
             buttonArr[2][i].grid(row=2 + i, column=3, padx=8, pady=10, sticky=W)
         i = i + 1
     threading.Thread(target=update_thread()).start()
@@ -235,66 +236,208 @@ if __name__ == '__main__':
     p1 = Process(target=update_thread())
     p1.start()
 
-    # using tkinter to create our GUI
-    stream = Tk()
-    stream.title("Teamusic")  # window title
-    stream.geometry("1450x1025")  # fixed window size
-    stream.configure(background="black")  # aesthetic choice
+    # button array for search results
+    buttonArr1 = [[0 for x in range(3)] for x in range(len(library))]
+    buttonArr2 = [[0 for x in range(3)] for x in range(len(library))]
+    buttonArr3 = [[0 for x in range(3)] for x in range(len(library))]
+    buttonArr4 = [[0 for x in range(3)] for x in range(len(library))]
 
-    # Initializing pygame audio mixer
+    ############################################
+
+    # create the tkinter window and initialize the pygame audio mixer
+    stream = Tk()
+    stream.title("Teamusic Split View")  # window title
+    stream.geometry("1450x1010")  # window dimensions
+    stream.configure(background="black")
+
     mixer.init()
 
-    # adding logo
-    Label(stream, text="\n\n\n\n\n\n\t teamusic", bg="black", fg="white", font="{Apple LiGothic} 10 bold") \
-        .grid(row=0, column=0, padx=7, pady=0, sticky=W)
+    ############################################
+
+    # preparing images for inclusion in GUI
+
+    # setting up the teamusic image logo
     logo_orig = Image.open("logo.jpg")
-    resize_logo = logo_orig.resize((100, 75))
+    resize_logo = logo_orig.resize((25, 19))
     logo = ImageTk.PhotoImage(resize_logo)
-    Label(stream, image=logo, bg="black").grid(row=0, column=0, padx=50, pady=0, sticky=W)
 
-    # creating song search query
-    Label(stream, text="\n\n\nSearch for your favorite songs & artists ", bg="black", fg="white", font="{Apple LiGothic} 18 bold") \
-        .grid(row=0, column=1, padx=8, pady=50, sticky=W)
-    # welcoming user to program in app
-    Label(stream, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 18 bold") \
-        .grid(row=1, column=1, padx=8, pady=20, sticky=W)
-
-    # creating search box
-    searchbar = Entry(stream, width=45, bg="white", font="{Apple LiGothic} 18")
-    searchbar.grid(row=0, column=1, padx=8, pady=50, sticky=W)
-
-    # creating a button to initiate the search
-    buttonArr = [[0 for x in range(3)] for x in range(len(library))]
-    searchbutton = Button(stream, text="Search", command=lambda: display_search(library, searchbar.get(), thru_button, buttonArr,pq), width=6, font="{Apple LiGothic} 18")
-    searchbutton.grid(row=0, column=2, padx=8, pady=50, sticky=W)
-
-    # creating play and pause button
+    # setting up the play/pause button
     playpause_orig = Image.open("playpause.png")
-    resize_playpause = playpause_orig.resize((100, 75))
+    resize_playpause = playpause_orig.resize((25, 19))
     playpause = ImageTk.PhotoImage(resize_playpause)
-    ppbutton = Button(stream, image=playpause, command=lambda:playorpause(), width=100, font="{Apple LiGothic} 18")
-    ppbutton.grid(row=5, column=1, padx=8, pady=15, sticky=W)
 
-    # play button for songs
-    # Khai Dreams Song
+    # Khai Dreams Through and Through
     thru_cover_orig = Image.open("thru.png")
-    resize_thru_cover = thru_cover_orig.resize((500, 300))
+    resize_thru_cover = thru_cover_orig.resize((250, 150))
     thru_cover = ImageTk.PhotoImage(resize_thru_cover)
-    # creating label for button event
-    thru_label = Label(image=thru_cover)
-    # button to play in library
-    thru_button = Button(stream, image=thru_cover,
-                         command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
-    thru_button.grid(row=2, column=1, padx=7, pady=100, sticky=W)
-    #thru_button = Button(stream, image=thru_cover,
-                         #command=lambda: play(library, "Through and Through")) \
-        #.grid(row=2, column=1, padx=7, pady=100, sticky=W)
+
+    ############################################
+
+    # frame 1
+
+    frame1 = LabelFrame(stream, width=725, height=500, text="User 1", bg="black", fg="white")
+    frame1.grid(row=0, column=0, sticky=W)
+    frame1.grid_propagate(0)
+
+    # teamusic logo
+    logolabel1 = Label(frame1, image=logo, bg="black")
+    logolabel1.grid(row=0, column=0, padx=5, pady=5)
+    label1 = Label(frame1, text="teamusic", bg="black",
+                   font="{Apple LiGothic} 6 bold", fg="white")
+    label1.grid(row=1, column=0, padx=5, pady=5)
+
+    # Welcome, Thomas
+    welcome1 = Label(frame1, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome1.grid(row=1, column=1, padx=5, pady=5, sticky=W)
+
+    # search bar and button
+    searchbar1 = Entry(frame1, width=35, bg="white", font="{Apple LiGothic} 9")
+    searchbar1.grid(row=0, column=1, padx=5, pady=5, sticky=W)
+    searchbutton1 = Button(frame1, text="Search", width=6, font="{Apple LiGothic} 9",
+                           command=lambda: display_search(library, searchbar1.get(), thru_button1, buttonArr1, pq,
+                                                          subframe1))
+    searchbutton1.grid(row=0, column=2, padx=5, pady=5)
+
+    # play button
+    ppbutton1 = Button(frame1, image=playpause, bg="black",
+                       command=lambda: playorpause())
+    ppbutton1.place(x=175, y=325)
+
+    # subframe
+
+    subframe1 = Frame(frame1, width=300, height=250, bg="#0D0D0D")
+    subframe1.grid(row=2, column=1, padx=5, pady=5)
+
+    thru_button1 = Button(subframe1, image=thru_cover,
+                          command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
+    thru_button1.grid(row=0, column=0, padx=5, pady=5)
+
+    ############################################
+
+    # frame2
+
+    frame2 = LabelFrame(stream, width=725, height=500, text="User 2", bg="black", fg="white")
+    frame2.grid(row=0, column=1, sticky=E)
+    frame2.grid_propagate(0)
+
+    # teamusic logo
+    logolabel2 = Label(frame2, image=logo, bg="black")
+    logolabel2.grid(row=0, column=0, padx=5, pady=5)
+    label2 = Label(frame2, text="teamusic", bg="black",
+                   font="{Apple LiGothic} 6 bold", fg="white")
+    label2.grid(row=1, column=0, padx=5, pady=5)
+
+    # Welcome, Thomas
+    welcome2 = Label(frame2, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome2.grid(row=1, column=1, padx=5, pady=5, sticky=W)
+
+    # search bar and button
+    searchbar2 = Entry(frame2, width=35, bg="white", font="{Apple LiGothic} 9")
+    searchbar2.grid(row=0, column=1, padx=5, pady=5, sticky=W)
+    searchbutton2 = Button(frame2, text="Search", width=6, font="{Apple LiGothic} 9",
+                           command=lambda: display_search(library, searchbar2.get(), thru_button2, buttonArr2, pq,
+                                                          subframe2))
+    searchbutton2.grid(row=0, column=2, padx=5, pady=5)
+
+    # play button
+    ppbutton2 = Button(frame2, image=playpause, bg="black",
+                       command=lambda: playorpause())
+    ppbutton2.place(x=175, y=325)
+
+    # subframe2
+    subframe2 = Frame(frame2, width=300, height=250, bg="#0D0D0D")
+    subframe2.grid(row=2, column=1, padx=5, pady=5)
+
+    thru_button2 = Button(subframe2, image=thru_cover,
+                          command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
+    thru_button2.grid(row=0, column=0, padx=5, pady=5)
+
+    ############################################
+
+    # frame 3
+
+    frame3 = LabelFrame(stream, width=725, height=500, text="User 3", bg="black", fg="white")
+    frame3.grid(row=1, column=0, sticky=W)
+    frame3.grid_propagate(0)
+
+    # teamusic logo
+    logolabel3 = Label(frame3, image=logo, bg="black")
+    logolabel3.grid(row=0, column=0, padx=5, pady=5)
+    label3 = Label(frame3, text="teamusic", bg="black",
+                   font="{Apple LiGothic} 6 bold", fg="white")
+    label3.grid(row=1, column=0, padx=5, pady=5)
+
+    # Welcome, Thomas
+    welcome3 = Label(frame3, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome3.grid(row=1, column=1, padx=5, pady=5, sticky=W)
+
+    # search bar and button
+    searchbar3 = Entry(frame3, width=35, bg="white", font="{Apple LiGothic} 9")
+    searchbar3.grid(row=0, column=1, padx=5, pady=5, sticky=W)
+    searchbutton3 = Button(frame3, text="Search", width=6, font="{Apple LiGothic} 9",
+                           command=lambda: display_search(library, searchbar3.get(), thru_button3, buttonArr3, pq,
+                                                          subframe3))
+    searchbutton3.grid(row=0, column=2, padx=5, pady=5)
+
+    # play button
+    ppbutton3 = Button(frame3, image=playpause, bg="black",
+                       command=lambda: playorpause())
+    ppbutton3.place(x=175, y=325)
+
+    # subframe
+
+    subframe3 = Frame(frame3, width=300, height=250, bg="#0D0D0D")
+    subframe3.grid(row=2, column=1, padx=5, pady=5)
+
+    thru_button3 = Button(subframe3, image=thru_cover,
+                          command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
+    thru_button3.grid(row=0, column=0, padx=5, pady=5)
+
+    ############################################
+
+    # frame 4
+
+    frame4 = LabelFrame(stream, width=725, height=500, text="User 4", bg="black", fg="white")
+    frame4.grid(row=1, column=1, sticky=E)
+    frame4.grid_propagate(0)
+
+    # teamusic logo
+    logolabel4 = Label(frame4, image=logo, bg="black")
+    logolabel4.grid(row=0, column=0, padx=5, pady=5)
+    label4 = Label(frame4, text="teamusic", bg="black",
+                   font="{Apple LiGothic} 6 bold", fg="white")
+    label4.grid(row=1, column=0, padx=5, pady=5)
+
+    # Welcome, Thomas
+    welcome4 = Label(frame4, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome4.grid(row=1, column=1, padx=5, pady=5, sticky=W)
+
+    # search bar and button
+    searchbar4 = Entry(frame4, width=35, bg="white", font="{Apple LiGothic} 9")
+    searchbar4.grid(row=0, column=1, padx=5, pady=5, sticky=W)
+    searchbutton4 = Button(frame4, text="Search", width=6, font="{Apple LiGothic} 9",
+                           command=lambda: display_search(library, searchbar4.get(), thru_button4, buttonArr4, pq,
+                                                          subframe4))
+    searchbutton4.grid(row=0, column=2, padx=5, pady=5)
+
+    # play button
+    ppbutton4 = Button(frame4, image=playpause, bg="black",
+                       command=lambda: playorpause())
+    ppbutton4.place(x=175, y=325)
+
+    # subframe
+
+    subframe4 = Frame(frame4, width=300, height=250, bg="#0D0D0D")
+    subframe4.grid(row=2, column=1, padx=5, pady=5)
+
+    thru_button4 = Button(subframe4, image=thru_cover,
+                          command=lambda: play_thread(library, "Through and Through - Khai Dreams"))
+    thru_button4.grid(row=0, column=0, padx=5, pady=5)
+
+    ############################################
+    # test
 
     stream.mainloop()
-
-    print('\nPyChar')
-    print('hi')
-    print('hello !')
 
 
 
