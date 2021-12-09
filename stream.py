@@ -148,7 +148,7 @@ def back_to_main(playlist, buttonArr, album_button):
         for i in range(len(playlist)):
             if buttonArr[j][i] != 0:
                 buttonArr[j][i].grid_remove()
-
+    # puts logos back
     album_button.grid(row=0, column=0, padx=5, pady=5)
 
 def play(playlist, song_name):
