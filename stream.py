@@ -236,6 +236,11 @@ if __name__ == '__main__':
     resize_playpause = playpause_orig.resize((25, 25))
     playpause = ImageTk.PhotoImage(resize_playpause)
 
+    # setting up the skip button
+    skipsong_orig = Image.open("skipsong.png")
+    resize_skipsong = skipsong_orig.resize((25, 25))
+    skipsong = ImageTk.PhotoImage(resize_skipsong)
+
     # Khai Dreams Through and Through
     thru_cover_orig = Image.open("thru.png")
     resize_thru_cover = thru_cover_orig.resize((250, 150))
@@ -273,6 +278,11 @@ if __name__ == '__main__':
     ppbutton1 = Button(frame1, image=playpause, bg="black",
                        command=lambda: playorpause(), bd = 0)
     ppbutton1.place(x=25, y=425)
+
+    # skip button
+    skipbutton1 = Button(frame1, image=skipsong, bg="black",
+                       command=lambda: playorpause(), bd = 0)
+    skipbutton1.place(x=25, y=375)
 
     # subframe
 
@@ -317,6 +327,11 @@ if __name__ == '__main__':
                        command=lambda: playorpause(), bd = 0)
     ppbutton2.place(x=25, y=425)
 
+    # skip button
+    skipbutton2 = Button(frame2, image=skipsong, bg="black",
+                       command=lambda: playorpause(), bd = 0)
+    skipbutton2.place(x=25, y=375)
+
     # subframe
 
     subframe2 = Frame(frame2, width=445, height=250, bg="black")
@@ -360,6 +375,11 @@ if __name__ == '__main__':
                        command=lambda: playorpause(), bd = 0)
     ppbutton3.place(x=25, y=425)
 
+    # skip button
+    skipbutton3 = Button(frame3, image=skipsong, bg="black",
+                       command=lambda: playorpause(), bd = 0)
+    skipbutton3.place(x=25, y=375)
+
     # subframe
 
     subframe3 = Frame(frame3, width=445, height=250, bg="black")
@@ -402,6 +422,11 @@ if __name__ == '__main__':
     ppbutton4 = Button(frame4, image=playpause, bg="black",
                        command=lambda: playorpause(), bd = 0)
     ppbutton4.place(x=25, y=425)
+
+    # skip button
+    skipbutton4 = Button(frame4, image=skipsong, bg="black",
+                       command=lambda: playorpause(), bd = 0)
+    skipbutton4.place(x=25, y=375)
 
     # subframe
 
