@@ -143,6 +143,14 @@ def display_search(playlist, search, album_button, buttonArr, pq, targ_frame):
         i = i + 1
 
 
+def back_to_main(playlist, buttonArr, album_button):
+    for j in range(3):
+        for i in range(len(playlist)):
+            if buttonArr[j][i] != 0:
+                buttonArr[j][i].grid_remove()
+
+    album_button.grid(row=0, column=0, padx=5, pady=5)
+
 def play(playlist, song_name):
     chosen_song = playlist[song_name]
     mixer.music.load(chosen_song)
@@ -242,8 +250,9 @@ if __name__ == '__main__':
     frame1.grid_propagate(0)
 
     # teamusic logo
-    logolabel1 = Label(frame1, image=logo, bg="black")
-    logolabel1.grid(row=0, column=0, padx=15, pady=5)
+    logobutton1 = Button(frame1, image=logo, bg="black", borderwidth=0,
+                         command=lambda: back_to_main(library, buttonArr1, thru_button1))
+    logobutton1.grid(row=0, column=0, padx=15, pady=5)
     label1 = Label(frame1, text="teamusic", bg="black",
                    font="{Apple LiGothic} 6 bold", fg="white")
     label1.grid(row=1, column=0, padx=15, pady=5)
@@ -284,8 +293,9 @@ if __name__ == '__main__':
     frame2.grid_propagate(0)
 
     # teamusic logo
-    logolabel2 = Label(frame2, image=logo, bg="black")
-    logolabel2.grid(row=0, column=0, padx=15, pady=5)
+    logobutton2 = Button(frame2, image=logo, bg="black", borderwidth=0,
+                         command=lambda: back_to_main(library, buttonArr2, thru_button2))
+    logobutton2.grid(row=0, column=0, padx=15, pady=5)
     label2 = Label(frame2, text="teamusic", bg="black",
                    font="{Apple LiGothic} 6 bold", fg="white")
     label2.grid(row=1, column=0, padx=15, pady=5)
@@ -326,8 +336,9 @@ if __name__ == '__main__':
     frame3.grid_propagate(0)
 
     # teamusic logo
-    logolabel3 = Label(frame3, image=logo, bg="black")
-    logolabel3.grid(row=0, column=0, padx=15, pady=5)
+    logobutton3 = Button(frame3, image=logo, bg="black", borderwidth=0,
+                         command=lambda: back_to_main(library, buttonArr3, thru_button3))
+    logobutton3.grid(row=0, column=0, padx=15, pady=5)
     label3 = Label(frame3, text="teamusic", bg="black",
                    font="{Apple LiGothic} 6 bold", fg="white")
     label3.grid(row=1, column=0, padx=15, pady=5)
@@ -368,8 +379,9 @@ if __name__ == '__main__':
     frame4.grid_propagate(0)
 
     # teamusic logo
-    logolabel4 = Label(frame4, image=logo, bg="black")
-    logolabel4.grid(row=0, column=0, padx=15, pady=5)
+    logobutton4 = Button(frame4, image=logo, bg="black", borderwidth=0,
+                         command=lambda: back_to_main(library, buttonArr4, thru_button4))
+    logobutton4.grid(row=0, column=0, padx=15, pady=5)
     label4 = Label(frame4, text="teamusic", bg="black",
                    font="{Apple LiGothic} 6 bold", fg="white")
     label4.grid(row=1, column=0, padx=15, pady=5)
