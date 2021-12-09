@@ -266,7 +266,7 @@ if __name__ == '__main__':
 
     # setting up the play/pause button
     playpause_orig = Image.open("playpause.png")
-    resize_playpause = playpause_orig.resize((25, 19))
+    resize_playpause = playpause_orig.resize((25, 25))
     playpause = ImageTk.PhotoImage(resize_playpause)
 
     # Khai Dreams Through and Through
@@ -304,7 +304,7 @@ if __name__ == '__main__':
     # play button
     ppbutton1 = Button(frame1, image=playpause, bg="black",
                        command=lambda: playorpause())
-    ppbutton1.place(x=30, y=425)
+    ppbutton1.place(x=25, y=425)
 
     # subframe
 
@@ -332,7 +332,7 @@ if __name__ == '__main__':
     label2.grid(row=1, column=0, padx=15, pady=5)
 
     # Welcome, Thomas
-    welcome2 = Label(frame2, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome2 = Label(frame2, text="Welcome, Ray", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
     welcome2.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 
     # search bar and button
@@ -346,7 +346,7 @@ if __name__ == '__main__':
     # play button
     ppbutton2 = Button(frame2, image=playpause, bg="black",
                        command=lambda: playorpause())
-    ppbutton2.place(x=30, y=425)
+    ppbutton2.place(x=25, y=425)
 
     # subframe
 
@@ -374,7 +374,7 @@ if __name__ == '__main__':
     label3.grid(row=1, column=0, padx=15, pady=5)
 
     # Welcome, Thomas
-    welcome3 = Label(frame3, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome3 = Label(frame3, text="Welcome, Katie", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
     welcome3.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 
     # search bar and button
@@ -388,7 +388,7 @@ if __name__ == '__main__':
     # play button
     ppbutton3 = Button(frame3, image=playpause, bg="black",
                        command=lambda: playorpause())
-    ppbutton3.place(x=30, y=425)
+    ppbutton3.place(x=25, y=425)
 
     # subframe
 
@@ -416,7 +416,7 @@ if __name__ == '__main__':
     label4.grid(row=1, column=0, padx=15, pady=5)
 
     # Welcome, Thomas
-    welcome4 = Label(frame4, text="Welcome, Thomas", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
+    welcome4 = Label(frame4, text="Welcome, Rory", bg="black", fg="white", font="{Apple LiGothic} 9 bold")
     welcome4.grid(row=1, column=1, padx=5, pady=5, sticky=W)
 
     # search bar and button
@@ -430,7 +430,7 @@ if __name__ == '__main__':
     # play button
     ppbutton4 = Button(frame4, image=playpause, bg="black",
                        command=lambda: playorpause())
-    ppbutton4.place(x=30, y=425)
+    ppbutton4.place(x=25, y=425)
 
     # subframe
 
