@@ -8,9 +8,12 @@ from multiprocessing import Process
 from PIL import Image, ImageTk
 
 eventstart = 0
+# screencount = 0
+# screens = []
+count = 0
 SONG_END = pygame.USEREVENT + 1
 upcoming = []
-count = 0
+
 
 # Creating the Priority Queue class to use for linking songs in the queue
 class PriorityQueueNode:
@@ -247,7 +250,9 @@ def add_to_queue(pq,song, playlist):
 def current_queue():
     global count
     global upcoming
+    #global screencount
     fix = len(upcoming)
+    #while screencount == 5:
     for i in range(fix):
         upcoming[i].grid_forget()
     for j in range(fix):
@@ -259,19 +264,9 @@ def current_queue():
         upcoming.append(Label(group_display1, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
         upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
         upcoming[count].grid_propagate(0)
-
-        upcoming.append(Label(group_display2, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
-        upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
-        upcoming[count].grid_propagate(0)
-
-        upcoming.append(Label(group_display3, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
-        upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
-        upcoming[count].grid_propagate(0)
-
-        upcoming.append(Label(group_display4, text=temp.data, font="{Apple LiGothic} 5", bg='#231f20', fg="white"))
-        upcoming[count].grid(row=2 + count, column=1, padx=0, pady=0, sticky=W)
-        upcoming[count].grid_propagate(0)
-
+        #screencount += 1
+        #if screencount == 5:
+            #screencount = 0
         temp = temp.next
         count += 1
 
@@ -406,6 +401,7 @@ if __name__ == '__main__':
     upcomingtitle1 = Label(group_display1, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
     upcomingtitle1.grid(row=1, column=1, padx=0, pady=0, sticky=W)
     upcomingtitle1.grid_propagate(0)
+    # screens.append(group_display1)
 
     ############################################
 
@@ -461,6 +457,7 @@ if __name__ == '__main__':
     upcomingtitle2 = Label(group_display2, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
     upcomingtitle2.grid(row=1, column=1, padx=0, pady=0, sticky=W)
     upcomingtitle2.grid_propagate(0)
+    # screens.append(group_display2)
 
     ############################################
 
@@ -516,6 +513,7 @@ if __name__ == '__main__':
     upcomingtitle3 = Label(group_display3, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
     upcomingtitle3.grid(row=1, column=1, padx=0, pady=0, sticky=W)
     upcomingtitle3.grid_propagate(0)
+    # screens.append(group_display3)
 
     ############################################
 
@@ -571,7 +569,7 @@ if __name__ == '__main__':
     upcomingtitle4 = Label(group_display4, text="Upcoming Songs:\t", font="{Apple LiGothic} 6 bold", bg='#231f20', fg="white")
     upcomingtitle4.grid(row=1, column=1, padx=0, pady=0, sticky=W)
     upcomingtitle4.grid_propagate(0)
-
+    # screens.append(group_display4)
     ############################################
 
     stream.mainloop()
